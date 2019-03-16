@@ -1,0 +1,11 @@
+karadoc bank 
+monnaie saucisson
+
+
+a l'ouverture du programme :
+    -initialisation : lecture du jason
+    -page de connexion : pseudo / mdp   + ouverture d'un nouveau compte client
+    si admin
+        -affichage menu admin
+    si client
+        -affichage menu client
