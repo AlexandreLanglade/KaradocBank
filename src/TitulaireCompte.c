@@ -6,6 +6,6 @@ struct TitulaireCompte_s
     char nom[15];
     char prenom[15];
     int numero_tel;
-    char mdp[???];
+    char mdp[32];
     Client client_suivant;
 };
