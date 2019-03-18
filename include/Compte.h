@@ -17,5 +17,8 @@ void exporterCompte(Compte compte);
 void supprimerCompte(Compte compte);
 void titulairesCompte(Compte compte);
 void afficherVirements(Compte compte);
+void setLock(Compte compte);
+void getLock(Compte compte);
+Compte LCinitCompte();
 
 #endif
