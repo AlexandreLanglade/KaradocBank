@@ -7,6 +7,7 @@ struct Virement_s
     char date[8];
     double montant;
     Virement virement_suivant;
+    int test;
 };
 
 Virement cr_virement(int id_comptefrom, int id_compteto, char date[8], double montant);
