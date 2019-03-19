@@ -4,7 +4,8 @@
 
 int main(int argv, char *argc)
 {
-    authentification();
+    system("clear");
+    page_login();
 
 	return EXIT_SUCCESS;
 

@@ -8,6 +8,7 @@ int getIdClient(Client client);
 char * getNom(Client client);
 char * getPrenom(Client client);
 int getNum(Client client);
+void setIdClient(Client client, int id_client); //Sinon je vois pas comment faire l'authetification
 void setNom(Client client, char nom[15]);
 void setPrenom(Client client, char prenom[15]);
 void setNum(Client client, int num);
