@@ -1,6 +1,8 @@
 #include "../include/KaradocUtil.h"
 
-void page_login()
+/*
+
+void login()
 {
     printf("1/ Login\n2/ Nouveau Client ?\n");
     system("clear");
@@ -56,7 +58,7 @@ void hachage_mdp(char *mdp)
     fclose(file);
     *mdp = hache;
 }
-
+*/
 
 //POURRA peut etre SERVIR A L'AVENIR (compare 2 mdp crypté entre eux)
 /*
