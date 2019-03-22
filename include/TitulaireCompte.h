@@ -22,11 +22,13 @@ void addLCClient(Client LCClient, Client client);
     */
 
 
+//#SET
 void setNom(Client client, char nom[15]);
 void setPrenom(Client client, char prenom[15]);
 void setNum(Client client, int num);
 void setMdp(Client client, char mdp[32]);
 
+//#GET
 int getIdClient(Client client);
 char * getNom(Client client);
 char * getPrenom(Client client);

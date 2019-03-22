@@ -38,13 +38,14 @@ void addLCCompte(Compte LCCompte, Compte compte);
     Ajoute un compte a une liste chainée de comptes
     */
 
+//#SET
 void setMontant(Compte compte, double montant);
 void setClient1(int id_client1, Compte compte);
 void setClient2(int id_client2, Compte compte);
 void setLock(Compte compte);
 void setType(char type);
 
-
+//#GET
 void getLock(Compte compte);
 double getMontant(Compte compte);
 char getType(Compte compte);

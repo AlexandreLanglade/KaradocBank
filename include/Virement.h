@@ -20,6 +20,7 @@ void addLCVirement(Virement LCVirement, Virement vir);
     Ajoute un compte a une liste chainée de comptes
     */
 
+//#GET
 int getIdCompteFrom(Virement vir);
 int getIdCompteTo(Virement vir);
 char * getDate(Virement vir);

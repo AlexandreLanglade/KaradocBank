@@ -15,7 +15,7 @@
 void initialisation(Compte LC_Compte, Client LC_Client, Virement LC_Virement);
     /*
     LCinitcompte + LCinitClient+ LCinitVirement
-    Les 3 pointeus en arguments deviennent les listes chainés
+    Les 3 pointeurs en arguments deviennent les listes chainés
     */
 
 Client login(Client LCClient);
