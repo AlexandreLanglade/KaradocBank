@@ -3,6 +3,8 @@
 
 //--------------INCLUDE--------------
 
+#include <stdlib.h>
+#include <stdio.h>
 
 //--------------STRUCT--------------
 
@@ -11,7 +13,8 @@ typedef struct Compte_s * Compte;
 //--------------METHODS--------------
 
 Compte cr_compte(int id_client1, int id_client2, char type);
-void afficherComptes(Compte compte);
+void toprintcompte(Compte compte);
+void afficherComptes(Compte LCcompte);
     /*
     Affiche la liste des comptes par type(pour l'admin)
     */
@@ -20,7 +23,7 @@ void exporterCompte(Compte compte, char from[8], char to[8]);
     exporter liste des opérations sur une période choisie
     dans le format CSV
     */
-void supprimerCompte(Compte compte);
+void supprimerCompte(Compte LCcompte, Compte compte);
 void titulairesCompte(Compte compte);
     /*
     Affiche les titulaires du compte
@@ -42,11 +45,11 @@ void addLCCompte(Compte LCCompte, Compte compte);
 void setMontant(Compte compte, double montant);
 void setClient1(int id_client1, Compte compte);
 void setClient2(int id_client2, Compte compte);
-void setLock(Compte compte);
-void setType(char type);
+void setLock(Compte compte, char locker);
+void setType(Compte compte, char type);
 
 //#GET
-void getLock(Compte compte);
+char getLock(Compte compte);
 double getMontant(Compte compte);
 char getType(Compte compte);
 int getIdCompte(Compte compte);
