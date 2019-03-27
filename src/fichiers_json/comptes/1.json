@@ -1,0 +1,8 @@
+{
+    "id_compte": "1",
+    "type": "courant",
+    "id_client1": "1",
+    "id_client2" : "-1",
+    "montant" : "1300",
+    "locker" : "1"
+}
