@@ -9,7 +9,7 @@ int main(int argv, char *argc)
     Client client_actif = NULL;
     system("clear");
     while(client_actif == NULL) client_actif = login(client_actif);
-    char choix;
+    int choix;
     if(getIdClient(client_actif) == -1) choix = menuAdmin();
     else choix = menuClient(client_actif);
 	return EXIT_SUCCESS;

@@ -3,6 +3,8 @@
 
 //--------------INCLUDE--------------
 
+#include <stdio.h>
+#include <stdlib.h>
 
 //--------------STRUCT--------------
 
@@ -17,7 +19,7 @@ Virement LCinitVirement();
     */
 void addLCVirement(Virement LCVirement, Virement vir);
     /*
-    Ajoute un compte a une liste chainée de comptes
+    Ajoute un virement a une liste chainée de virements
     */
 
 int getIdCompteFrom(Virement vir);
