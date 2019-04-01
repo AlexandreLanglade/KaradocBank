@@ -11,7 +11,7 @@ int main(int argv, char *argc)
     while(client_actif == NULL) client_actif = login(client_actif);
     char choix;
     if(getIdClient(client_actif) == -1) choix = menuAdmin();
-    else choix = menuClient();
+    else choix = menuClient(client_actif);
 	return EXIT_SUCCESS;
 
 }
