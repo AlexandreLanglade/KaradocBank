@@ -9,21 +9,21 @@ void initialisation(Compte LC_Compte, Client LC_Client, Virement LC_Virement)
     char commande[100];
     char compt[100];
     int  i, i_compt;
-    sprintf(compt, "ls fichiers_json/clients | wc -l");
+    sprintf(compt, "ls ../data/Clients | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
     i_compt = atoi(compt);
     for(i = 1; i <= i_compt; i++){
         addLCClient(LC_Client, lecture_fichier_json_client(i, client));
     }
-    sprintf(compt, "ls fichiers_json/comptes | wc -l");
+    sprintf(compt, "ls ../data/Comptes | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
     i_compt = atoi(compt);
     for(i = 1; i <= i_compt; i++){
         addLCCompte(LC_Compte, lecture_fichier_json_compte(i, compte));
     }
-    sprintf(compt, "ls fichiers_json/virements | wc -l");
+    sprintf(compt, "ls ../data/Virements | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
     i_compt = atoi(compt);
@@ -39,7 +39,7 @@ Client lecture_fichier_json_client(int id, Client client)
     char compt[100];
     int  i;
     for(i = 6; i >= 2; i--) {
-        sprintf(commande, "cat fichiers_json/clients/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
+        sprintf(commande, "cat ../data/Clients/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
         f = popen (commande, "r") ;
         fgets(commande, 100, f);
         switch(i) {
@@ -69,7 +69,7 @@ Compte lecture_fichier_json_compte(int id, Compte compte)
     char compt[100];
     int  i;
     for(i = 7; i >= 2; i--) {
-        sprintf(commande, "cat fichiers_json/comptes/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
+        sprintf(commande, "cat ../data/Comptes/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
         f = popen (commande, "r") ;
         fgets(commande, 100, f);
         switch(i) {
@@ -102,7 +102,7 @@ Virement lecture_fichier_json_virement(int id, Virement virement)
     char compt[100];
     int  i;
     for(i = 5; i >= 2; i--) {
-        sprintf(commande, "cat fichiers_json/virements/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
+        sprintf(commande, "cat ../data/Virements/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
         f = popen (commande, "r") ;
         fgets(commande, 100, f);
         printf("%s", commande);
@@ -116,7 +116,7 @@ void creer_fichier_json_client(int id_client, char *nom, char *prenom, int numer
     char nom_fichier[100] = "";
     char id[12];
     sprintf(id, "%d", id_client);
-    strcat(nom_fichier, "fichiers_json/clients/");
+    strcat(nom_fichier, "../data/Clients/");
     strcat(nom_fichier, id);
     strcat(nom_fichier, ".json");
     fichier = fopen(nom_fichier, "w");
@@ -135,7 +135,7 @@ void creer_fichier_json_compte(int id_compte, char type, int id_client1, int id_
     char nom_fichier[100] = "";
     char id[12];
     sprintf(id, "%d", id_compte);
-    strcat(nom_fichier, "fichiers_json/comptes/");
+    strcat(nom_fichier, "../data/Comptes/");
     strcat(nom_fichier, id);
     strcat(nom_fichier, ".json");
     fichier = fopen(nom_fichier, "w");
@@ -163,7 +163,7 @@ void creer_fichier_json_virement(int id_compteFrom, int id_compteTo, char *date,
     char nom_fichier[100] = "";
     char id[12];
     sprintf(id, "%d", id_compteFrom);
-    strcat(nom_fichier, "fichiers_json/virements/");
+    strcat(nom_fichier, "../data/Virements/");
     strcat(nom_fichier, id);
     strcat(nom_fichier, ".json");
     fichier = fopen(nom_fichier, "w");
@@ -181,8 +181,9 @@ void creer_fichier_json_virement(int id_compteFrom, int id_compteTo, char *date,
 Client login(Client LCClient)
 {
     int answer;
-    printf("1/ Login\n2/ Nouveau Client ?\n");
+    printf("1/ Login\n2/ Nouveau Client ?\n3/ Quitter\n");
     scanf("%d", &answer);
+    if(answer == 3) exit(EXIT_SUCCESS);
     system("clear");
     int login;
     char nom[15];
@@ -222,39 +223,174 @@ Client login(Client LCClient)
 
 void hachage_mdp(char *mdp)
 {
-    FILE *file, *f;
-    file = fopen("../mot_de_passe.txt", "w");
-    
+    FILE *f;    
     char commande[40];
     sprintf(commande, "echo %s | md5sum", mdp);
     f   = popen (commande, "r") ;
 	char hache[32];
 	fgets(hache, 32, f);
-	fprintf(file, "%s\n", hache);
     pclose(f);
-    fclose(file);
     *mdp = hache;
 }
 
-char menu_admin()
+int menu_admin()
 {
-    char choix;
+    int choix, choice;
     system("clear");
     printf("----MENU ADMINISTRATEUR----\n\n");
     printf("1/ Gestion des comptes\n");
     printf("2/ Gestion des clients\n");
     printf("3/ Administration\n");
-    scanf("%c", &choix);
-    return choix;
+    printf("4/ Quitter\n");
+    scanf("%d", &choix);
+    choix += 10;
+    system("clear");
+    switch(choix) {
+        case 1 :
+        choix = menu_admin_gestionComptes() + 10;
+        break;
+        case 2 :
+        choix = menu_admin_gestionClients(); + 20;
+        break;
+        case 3 :
+        choix = menu_admin_administration() + 30;
+        break;
+        case 4 :
+        exit(EXIT_SUCCESS);
+        break;
+        default :
+        printf("error\n");
+        break;
+    }
+    return choice;
 }
 
-char menu_client(Client client)
+int menu_client(Client client)
 {
-    char choix;
+    int choix;
+    system("clear");
     printf("----MENU CLIENT----\n");
     printf("Que souhaitez vous faire %s %s ?", getNom(client), getPrenom(client));
     printf("1/ Gestion des comptes\n");
     printf("2/ Administration\n");
-    scanf("%c", &choix);
+    printf("3/ Quitter\n");
+    scanf("%d", &choix);
+    switch(choix) {
+        case 1 :
+        choix = menu_client_gestionComptes(client);
+        break;
+        case 2 :
+        choix = menu_client_administration(client);
+        break;
+        case 3 :
+        exit(EXIT_SUCCESS);
+        break;
+        default :
+        printf("error\n");
+        break;
+    }
+    return choix;
+}
+
+int menu_client_gestionComptes(Client client)
+{
+    system("clear");
+    int choix;
+    printf("client_actif : %s %s", getNom(client), getPrenom(client));
+    printf("----Gestion des Comptes----\n");
+    printf("1/ solde\n");
+    printf("2/ liste des opérations\n");
+    printf("3/ consulter virements\n");
+    printf("4/ Retour\n");
+    scanf("%d", &choix);
+    switch(choix) {
+        case 1 :
+        //TODO Consulter solde
+        break;
+        case 2 :
+        //TODO liste des opérations
+        break;
+        case 3 :
+        //TODO consulter virements
+        break;
+        case 4 :
+        menu_client(client);
+        default :
+        printf("Error");
+        break;
+    }
+    return choix;
+}
+
+int menu_client_administration(Client client)
+{
+    system("clear");
+    int choix;
+    printf("client_actif : %s %s", getNom(client), getPrenom(client));
+    printf("----Administration----\n");
+    printf("1/ creation compte\n");
+    printf("2/ suppression compte\n");
+    printf("3/ changer mot de passe\n");
+    printf("4/ Retour\n");
+    scanf("%d", &choix);
+    switch(choix) {
+        case 1 :
+        //TODO CREER FONCTION
+        break;
+        case 2 :
+        //TODO CREER FONCTION
+        break;
+        case 3 :
+        char mdp[32];
+        printf("Nouveau mot de passe : ");
+        scanf("%s", mdp);
+        hachage_mdp(mdp);
+        setMdp(client, mdp);
+        break;
+        case 4 :
+        menu_client(client);
+        default :
+        printf("Error");
+        break;
+    }
+    return choix;
+}
+
+int menu_admin_gestionComptes()
+{
+    int choix;
+    system("clear");
+    printf("admin\n");
+    printf("----Gestion des comptes----\n");
+    printf("1/ créer, modifier, supprimer compte\n");
+    printf("2/ afficher liste des comptes\n");
+    printf("3/ Retour\n");
+    scanf("%d", &choix);
+    return choix;
+}
+
+int menu_admin_gestionClients()
+{
+    int choix;
+    system("clear");
+    printf("admin");
+    printf("----Gestion des clients----\n");
+    printf("1/ ajouter client\n");
+    printf("2/ modifier coordonnées client\n");
+    printf("3/ afficher liste titulaires du compte\n");
+    printf("4/ Retour\n");
+    scanf("%d", &choix);
+    return choix;
+}
+
+int menu_admin_administration()
+{
+    int choix;
+    system("clear");
+    printf("admin");
+    printf("----Administration----\n");
+    printf("1/ changer mot de passe\n");
+    printf("2/ Retour\n");
+    scanf("%d", &choix);
     return choix;
 }
