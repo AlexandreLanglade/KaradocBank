@@ -1,35 +1,12 @@
 #include "../include/KaradocUtil.h"
 
-void initialisation(Compte LC_Compte, Client LC_Client, Virement LC_Virement)
+//TODO : REMPLASSER TODO DANS LES SWITCHS PAR DES FONCTIONS (de TitulaireCompte.c ?)
+
+void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
 {
-    FILE *f;
-    Client client;
-    Compte compte;
-    Virement virement;
-    char commande[100];
-    char compt[100];
-    int  i, i_compt;
-    sprintf(compt, "ls ../data/Clients | wc -l");
-    f = popen (compt, "r") ;
-    fgets(compt, 100, f);
-    i_compt = atoi(compt);
-    for(i = 1; i <= i_compt; i++){
-        addLCClient(LC_Client, lecture_fichier_json_client(i, client));
-    }
-    sprintf(compt, "ls ../data/Comptes | wc -l");
-    f = popen (compt, "r") ;
-    fgets(compt, 100, f);
-    i_compt = atoi(compt);
-    for(i = 1; i <= i_compt; i++){
-        addLCCompte(LC_Compte, lecture_fichier_json_compte(i, compte));
-    }
-    sprintf(compt, "ls ../data/Virements | wc -l");
-    f = popen (compt, "r") ;
-    fgets(compt, 100, f);
-    i_compt = atoi(compt);
-    for(i = 1; i <= i_compt; i++){
-        addLCVirement(LC_Virement, lecture_fichier_json_client(i, virement));
-    }
+    LCClient = LCinitClient();
+    LCCompte = LCinitCompte();
+    LCVirement = LCinitVirement();
 }
 
 Client lecture_fichier_json_client(int id, Client client)
@@ -233,9 +210,9 @@ void hachage_mdp(char *mdp)
     *mdp = hache;
 }
 
-int menu_admin()
+void menu_admin()
 {
-    int choix, choice;
+    int choix;
     system("clear");
     printf("----MENU ADMINISTRATEUR----\n\n");
     printf("1/ Gestion des comptes\n");
@@ -243,17 +220,15 @@ int menu_admin()
     printf("3/ Administration\n");
     printf("4/ Quitter\n");
     scanf("%d", &choix);
-    choix += 10;
-    system("clear");
     switch(choix) {
         case 1 :
-        choix = menu_admin_gestionComptes() + 10;
+        menu_admin_gestionComptes();
         break;
         case 2 :
-        choix = menu_admin_gestionClients(); + 20;
+        menu_admin_gestionClients();
         break;
         case 3 :
-        choix = menu_admin_administration() + 30;
+        menu_admin_administration();
         break;
         case 4 :
         exit(EXIT_SUCCESS);
@@ -262,10 +237,9 @@ int menu_admin()
         printf("error\n");
         break;
     }
-    return choice;
 }
 
-int menu_client(Client client)
+void menu_client(Client client)
 {
     int choix;
     system("clear");
@@ -277,10 +251,10 @@ int menu_client(Client client)
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
-        choix = menu_client_gestionComptes(client);
+        menu_client_gestionComptes(client);
         break;
         case 2 :
-        choix = menu_client_administration(client);
+        menu_client_administration(client);
         break;
         case 3 :
         exit(EXIT_SUCCESS);
@@ -289,7 +263,6 @@ int menu_client(Client client)
         printf("error\n");
         break;
     }
-    return choix;
 }
 
 int menu_client_gestionComptes(Client client)
@@ -322,7 +295,7 @@ int menu_client_gestionComptes(Client client)
     return choix;
 }
 
-int menu_client_administration(Client client)
+void menu_client_administration(Client client)
 {
     system("clear");
     int choix;
@@ -341,6 +314,7 @@ int menu_client_administration(Client client)
         //TODO CREER FONCTION
         break;
         case 3 :
+        //TODO REMPLACER PAR UNE FONCTION (+ PROPRE ?)
         char mdp[32];
         printf("Nouveau mot de passe : ");
         scanf("%s", mdp);
@@ -353,10 +327,9 @@ int menu_client_administration(Client client)
         printf("Error");
         break;
     }
-    return choix;
 }
 
-int menu_admin_gestionComptes()
+void menu_admin_gestionComptes()
 {
     int choix;
     system("clear");
@@ -366,10 +339,22 @@ int menu_admin_gestionComptes()
     printf("2/ afficher liste des comptes\n");
     printf("3/ Retour\n");
     scanf("%d", &choix);
-    return choix;
+    switch(choix) {
+        case 1 :
+        //TODO
+        break;
+        case 2 :
+        //TODO
+        break;
+        case 3 :
+        menu_admin();
+        default :
+        printf("Error");
+        break;
+    }
 }
 
-int menu_admin_gestionClients()
+void menu_admin_gestionClients()
 {
     int choix;
     system("clear");
@@ -380,10 +365,25 @@ int menu_admin_gestionClients()
     printf("3/ afficher liste titulaires du compte\n");
     printf("4/ Retour\n");
     scanf("%d", &choix);
-    return choix;
+    switch(choix) {
+        case 1 :
+        //TODO
+        break;
+        case 2 :
+        //TODO
+        break;
+        case 3 :
+        //TODO
+        break;
+        case 4 :
+        menu_admin();
+        default :
+        printf("Error");
+        break;
+    }
 }
 
-int menu_admin_administration()
+void menu_admin_administration()
 {
     int choix;
     system("clear");
@@ -392,5 +392,14 @@ int menu_admin_administration()
     printf("1/ changer mot de passe\n");
     printf("2/ Retour\n");
     scanf("%d", &choix);
-    return choix;
+    switch(choix) {
+        case 1 :
+        //TODO
+        break;
+        case 2 :
+        menu_admin();
+        default :
+        printf("Error");
+        break;
+    }
 }

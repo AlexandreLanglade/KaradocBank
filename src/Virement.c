@@ -22,9 +22,20 @@ Virement cr_virement(int id_compteFrom, int id_compteTo, char *date, double mont
 
 Virement LCinitVirement()
 {
-    Virement LCVirement;
-    LCVirement = malloc(sizeof(Virement));
+    FILE *f;
+    char compt[100];
+    int  i, i_compt;
+    Virement LCVirement, virement;
     LCVirement = NULL;
+    virement = cr_virement(0, 0, "00000000", 0);
+    sprintf(compt, "ls ../data/Virements | wc -l");
+    f = popen (compt, "r") ;
+    fgets(compt, 100, f);
+    i_compt = atoi(compt);
+    for(i = 1; i <= i_compt; i++){
+        lecture_fichier_json_client(i, virement);
+        addLCVirement(LCVirement, virement);
+    }
     return LCVirement;
 }
 
