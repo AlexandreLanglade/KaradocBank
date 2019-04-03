@@ -11,6 +11,7 @@ struct Compte_s
     Compte compte_suivant;
 };
 
+//TODO 2 fonctions
 Compte
 cr_compte(int id_client1, int id_client2, char type) {
     Compte res;
