@@ -33,7 +33,7 @@ Virement LCinitVirement()
     fgets(compt, 100, f);
     i_compt = atoi(compt);
     for(i = 1; i <= i_compt; i++){
-        lecture_fichier_json_client(i, virement);
+        virement = lecture_fichier_json_virement(i, virement);
         addLCVirement(LCVirement, virement);
     }
     return LCVirement;
