@@ -1,1 +1,6 @@
 .vscode
+/lib/Compte.o
+/lib/KaradocUtil.o
+/lib/TitulaireCompte.o
+/lib/Virement.o
+/bin/KaradocBank

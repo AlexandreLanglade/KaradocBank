@@ -314,12 +314,7 @@ void menu_client_administration(Client client)
         //TODO CREER FONCTION
         break;
         case 3 :
-        //TODO REMPLACER PAR UNE FONCTION (+ PROPRE ?)
-        char mdp[32];
-        printf("Nouveau mot de passe : ");
-        scanf("%s", mdp);
-        hachage_mdp(mdp);
-        setMdp(client, mdp);
+        //TODO CREER FONCTION
         break;
         case 4 :
         menu_client(client);
