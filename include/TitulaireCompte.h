@@ -3,6 +3,8 @@
 
 //--------------INCLUDE--------------
 
+#include <stdio.h>
+#include <stdlib.h>
 
 //--------------STRUCT--------------
 
@@ -11,7 +13,7 @@ typedef struct TitulaireCompte_s * Client;
 //--------------METHODS--------------
 
 Client cr_client(char nom[15], char prenom[15], int numero_tel, char mdp[32]);
-void supprimerClient(Client client);
+void supprimerClient(Client LCClient, Client client);
 Client LCinitClient();
     /*
     Retourne la liste chainée des clients

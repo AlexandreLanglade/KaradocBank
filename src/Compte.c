@@ -23,6 +23,7 @@ cr_compte(int id_client1, int id_client2, char type) {
     res->locker = 1;
     res->compte_suivant = NULL;
     //Enregistrer nouveau json
+    return res;
 }
 
 void
@@ -81,8 +82,14 @@ exporterCompte(Compte compte, char from[8], char to[8]) {
 
 void
 supprimerCompte(Compte LCcompte, Compte compte) {
+    //LE COMPTE DOIT EXISTER !!!
     //TODO : remove le json
     Compte etude = LCcompte;
+    if (etude->compte_suivant == NULL) {
+        LCcompte = NULL;
+        free(etude);
+        return;
+    }
     while(etude->compte_suivant != compte){
         etude = etude->compte_suivant;
     }
@@ -101,8 +108,13 @@ titulairesCompte(Compte compte) {
 }
 
 void
-afficherVirements(Compte compte) {
-    //TODO
+afficherVirements(Compte compte, Virement LCvir) {
+    Virement etude = LCvir;
+    while(etude != NULL){
+        if (getIdCompteFrom(etude) == compte || getIdCompteTo(etude) == compte){
+            //TODO afficher avec diff si from ou to
+        }
+    }    
 }
 
 Compte

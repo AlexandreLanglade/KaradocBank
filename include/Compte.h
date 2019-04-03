@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "Virement.h"
 
 //--------------STRUCT--------------
 
@@ -28,7 +29,7 @@ void titulairesCompte(Compte compte);
     /*
     Affiche les titulaires du compte
     */
-void afficherVirements(Compte compte);
+void afficherVirements(Compte compte, Virement LCvir);
     /*
     Affiche la liste des virements du compte
     */
