@@ -5,11 +5,16 @@ struct Compte_s
     int id_compte;
     char type;
     int id_client1;
-    int id_client2;
+    int id_client2; //-1 si pas de deuxieme proprio
     double montant;
     char locker;
     Compte compte_suivant;
 };
+
+int
+getIndexCompte(){
+    //TODO
+}
 
 //TODO 2 fonctions
 Compte
@@ -119,8 +124,9 @@ afficherVirements(Compte compte, Virement LCvir) {
 }
 
 Compte
-LCinitCompte() {
+LCinitCompte(/*int index compte*/) {
     //TODO
+    // cherhcher le bon fichier
 }
 
 void

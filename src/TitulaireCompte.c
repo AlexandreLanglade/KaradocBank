@@ -11,6 +11,7 @@ struct TitulaireCompte_s
 };
 
 //TODO VarGlobSize
+//getindex
 
 Client
 cr_client(char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
@@ -31,23 +32,6 @@ cr_client(char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
     res->client_suivant = NULL;
     //Enregistrer nouveau json
     return res;
-}
-
-void
-supprimerClient(Client LCClient, Client client){
-    //LE CLIENT DOIT EXISTER !!!
-    //TODO : remove le json
-    Client etude = LCClient;
-    if (etude->client_suivant == NULL) {
-        LCClient = NULL;
-        free(etude);
-        return;
-    }
-    while(etude->client_suivant != client){
-        etude = etude->client_suivant;
-    }
-    etude->client_suivant = client->client_suivant;
-    free(client);
 }
 
 void

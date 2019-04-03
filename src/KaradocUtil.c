@@ -4,6 +4,11 @@
 
 void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
 {
+    /*Forme pour les comptes :
+    for 1 nb de fichiers -1 :
+    LCinitCompte(int index compte + lc)
+    ls | tail -n3 | head -n1 | cut -f1 -d '.'
+    */
     LCClient = LCinitClient();
     LCCompte = LCinitCompte();
     LCVirement = LCinitVirement();

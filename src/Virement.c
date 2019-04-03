@@ -9,6 +9,11 @@ struct Virement_s
     Virement virement_suivant;
 };
 
+int
+getIndex(){
+    //TODO
+}
+
 Virement cr_virement(int id_compteFrom, int id_compteTo, char *date, double montant)
 {
     Virement res;
