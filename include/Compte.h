@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Virement.h"
+#include "KaradocUtil.h"
 
 //--------------STRUCT--------------
 
@@ -13,13 +14,14 @@ typedef struct Compte_s * Compte;
 
 //--------------METHODS--------------
 
-Compte cr_compte(int id_client1, int id_client2, char type);
+int getIndexCompte();
+void cr_compte(Compte LCcompte, int id_client1, int id_client2, char type);
 void toprintcompte(Compte compte);
 void afficherComptes(Compte LCcompte);
     /*
     Affiche la liste des comptes par type(pour l'admin)
     */
-void exporterCompte(Compte compte, char from[8], char to[8]);
+void exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]);
     /*
     exporter liste des opérations sur une période choisie
     dans le format CSV

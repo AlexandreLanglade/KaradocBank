@@ -20,7 +20,7 @@ Virement cr_virement(int id_compteFrom, int id_compteTo, char *date, double mont
     res = malloc(sizeof(Virement));
     res->id_compteFrom = id_compteFrom;
     res->id_compteTo = id_compteTo;
-    res->date = date;
+    res->date = date; // pas en param mais ici, non?
     res->montant = montant;
     return res;
 }
@@ -75,4 +75,9 @@ char *getDate(Virement virement)
 double getMontantVir(Virement virement)
 {
     return virement->montant;
+}
+
+Virement
+getNextVir(Virement vir) {
+    return vir->virement_suivant;
 }

@@ -13,23 +13,30 @@ struct Compte_s
 
 int
 getIndexCompte(){
-    //TODO
+    //TODO théau
 }
 
-//TODO 2 fonctions
-Compte
-cr_compte(int id_client1, int id_client2, char type) {
+void
+cr_compte(Compte LCcompte, int id_client1, int id_client2, char type) {
     Compte res;
     res = malloc(sizeof(Compte));
-    //TODO: int id_compte + incrementer index
+    res->id_compte = getIndexCompte();
     res->type = type; // a : livret a | c : courant | p : pel
     res->id_client1 = id_client1;
     res->id_client2 = id_client2;
     res->montant = 0;
     res->locker = 1;
     res->compte_suivant = NULL;
-    //Enregistrer nouveau json
-    return res;
+    creer_fichier_json_compte(res->id_compte, res->type, res->id_client1, res->id_client2, res->montant, res->locker);
+    addLCCompte(LCcompte, res);
+}
+
+void
+LCinitCompte(int index, Compte LCcompte) {
+    Compte res;
+    res = malloc(sizeof(Compte));
+    //TODO theau : chercher le bon fichier puis remplir res par lecture du fichier
+    addLCCompte(LCcompte, res);
 }
 
 void
@@ -82,14 +89,56 @@ afficherComptes(Compte LCcompte) {
 }
 
 void
-exporterCompte(Compte compte, char from[8], char to[8]) {
+exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
     //TODO
+    int jfrom, mfrom, afrom, jto, mto, ato;
+    jfrom = from[0]*10 + from[1];
+    mfrom = from[2]*10 + from[3];
+    afrom = from[4]*1000 + from[5]*100 + from[6]*10 + from[7];
+    jto = to[0]*10 + to[1];
+    mto = to[2]*10 + to[3];
+    ato = to[4]*1000 + to[5]*100 + to[6]*10 + to[7];
+    FILE * fichierexport = NULL;
+    fichierexport = fopen(???); /* todo theau : peux tu
+        faire en sorte que le nom du fichier créé (dans data/export/) soit de la forme:
+        "idcompte datefrom dateto.csv" stp et ouvert en écriture
+    */
+    fputs("From,To,Date,Value", fichierexport);
+    Virement etude = LCvir;
+    while(etude != NULL) {
+        if (getIdCompteFrom(etude) == compte || getIdCompteTo(etude) == compte) {
+            int jetude, metude, aetude;
+            jetude = getDate(etude)[0]*10 + getDate(etude)[1];
+            metude = getDate(etude)[2]*10 + getDate(etude)[3];
+            aetude = getDate(etude)[4]*1000 + getDate(etude)[5]*100 + getDate(etude)[6]*10 + getDate(etude)[7];
+            if (ato - aetude < 0 || aetude - afrom < 0) {
+                etude = getNextVir(etude);
+                break;
+            }
+            if ((ato - aetude == 0 && mto - metude < 0) || (aetude - afrom == 0 && metude - mfrom < 0)) {
+                etude = getNextVir(etude);
+                break;
+            }
+            if ((ato - aetude == 0 && mto - metude == 0 && jto - jetude < 0) || (aetude - afrom == 0 && metude - mfrom == 0 && jetude - jfrom < 0)) {
+                etude = getNextVir(etude);
+                break;
+            }
+            fprintf(fichierexport, "%d,%d,%d/%d/%d,%lf", 
+                getIdCompteFrom(etude),
+                getIdCompteTo(etude),
+                jetude,metude,aetude,
+                getMontantVir(etude)
+            );
+        }
+        etude = getNextVir(etude);    
+    }
+    fclose(fichierexport);
 }
 
 void
 supprimerCompte(Compte LCcompte, Compte compte) {
     //LE COMPTE DOIT EXISTER !!!
-    //TODO : remove le json
+    //TODO théau : remove le json
     Compte etude = LCcompte;
     if (etude->compte_suivant == NULL) {
         LCcompte = NULL;
@@ -121,12 +170,6 @@ afficherVirements(Compte compte, Virement LCvir) {
             //TODO afficher avec diff si from ou to
         }
     }    
-}
-
-Compte
-LCinitCompte(/*int index compte*/) {
-    //TODO
-    // cherhcher le bon fichier
 }
 
 void

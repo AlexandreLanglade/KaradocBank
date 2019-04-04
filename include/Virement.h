@@ -28,5 +28,6 @@ int getIdCompteFrom(Virement vir);
 int getIdCompteTo(Virement vir);
 char * getDate(Virement vir);
 double getMontantVir(Virement vir);
+Virement getNextVir(Virement vir);
 
 #endif

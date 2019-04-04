@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "KaradocUtil.h"
 
 //--------------STRUCT--------------
 
@@ -12,8 +13,10 @@ typedef struct TitulaireCompte_s * Client;
 
 //--------------METHODS--------------
 
-Client cr_client(char nom[15], char prenom[15], int numero_tel, char mdp[32]);
-Client LCinitClient();
+
+int getIndexClient();
+void cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char mdp[32]);
+void LCinitClient(int index, Client LCclient);
     /*
     Retourne la liste chainée des clients
     */
