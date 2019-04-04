@@ -11,14 +11,18 @@ struct TitulaireCompte_s
 };
 
 //TODO VarGlobSize
-//getindex
 
-Client
-cr_client(char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
+int
+getIndexClient(){
+    //TODO théau
+}
+
+void
+cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
     int i;
     Client res;
     res = malloc(sizeof(Client));
-    //TODO: int id_client + incrementer index
+    res->id_client = getIndexClient();
     for(i = 0; i < 15; i++) {
         res->nom[i] = nom[i];
     }
@@ -30,8 +34,16 @@ cr_client(char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
     }    
     res->numero_tel = numero_tel;
     res->client_suivant = NULL;
-    //Enregistrer nouveau json
-    return res;
+    creer_fichier_json_client(res->id_client, res->nom, res->prenom, res->numero_tel, res->mdp);
+    addLCClient(LCclient, res);
+}
+
+void
+LCinitClient(int index, Client LCclient){
+    Client res;
+    res = malloc(sizeof(Client));
+    //TODO theau : chercher le bon fichier puis remplir res par lecture du fichier
+    addLCClient(LCclient, res);
 }
 
 void
