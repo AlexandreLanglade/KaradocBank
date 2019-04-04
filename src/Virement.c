@@ -11,10 +11,15 @@ struct Virement_s
 
 int
 getIndex(){
-    //TODO
+    FILE *file;
+	file = fopen("../data/Virements/index.txt", "r");
+	char temp[10];
+	fgets(temp, 10, file);
+	int index = atoi(temp);
+    return index;
 }
 
-Virement cr_virement(int id_compteFrom, int id_compteTo, char *date, double montant)
+Virement cr_virement(int id_compteFrom, int id_compteTo, char date[8], double montant)
 {
     Virement res;
     res = malloc(sizeof(Virement));
@@ -22,26 +27,16 @@ Virement cr_virement(int id_compteFrom, int id_compteTo, char *date, double mont
     res->id_compteTo = id_compteTo;
     res->date = date; // pas en param mais ici, non?
     res->montant = montant;
+    creer_fichier_json_virement(getIndex(), res->id_compteFrom, res->id_compteTo, res->date, res->montant);
     return res;
 }
 
-Virement LCinitVirement()
+void LCinitVirement(int index, Virement LCVirement)
 {
-    FILE *f;
-    char compt[100];
-    int  i, i_compt;
-    Virement LCVirement, virement;
-    LCVirement = NULL;
-    virement = cr_virement(0, 0, "00000000", 0);
-    sprintf(compt, "ls ../data/Virements | wc -l");
-    f = popen (compt, "r") ;
-    fgets(compt, 100, f);
-    i_compt = atoi(compt);
-    for(i = 1; i <= i_compt; i++){
-        virement = lecture_fichier_json_virement(i, virement);
-        addLCVirement(LCVirement, virement);
-    }
-    return LCVirement;
+    Virement res;
+    res = malloc(sizeof(Virement));
+    lecture_fichier_json_virement(index, res);
+    addLCClient(LCVirement, res);
 }
 
 void addLCVirement(Virement LCVirement, Virement vir)

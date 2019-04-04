@@ -4,17 +4,56 @@
 
 void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
 {
-    /*Forme pour les comptes :
-    for 1 nb de fichiers -1 :
-    LCinitCompte(int index compte + lc)
-    ls | tail -n3 | head -n1 | cut -f1 -d '.'
-    */
-    LCClient = LCinitClient();
-    LCCompte = LCinitCompte();
-    LCVirement = LCinitVirement();
+    FILE *f;
+	int i, i_compt, ind;
+	char compt[100]; 
+	char commande[100];
+	sprintf(compt, "ls ../data/Clients | wc -l");
+    f = popen (compt, "r") ;
+    fgets(compt, 100, f);
+    i_compt = atoi(compt);
+    for(i = 0; i < i_compt-1; i++){
+    	sprintf(commande, "ls ../data/Clients | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
+    	f = popen (commande, "r") ;
+    	fgets(commande, 100, f);
+    	ind = atoi(commande);
+    	LCinitClient(ind, LCClient);
+    }
+
+    FILE *f;
+	int i, i_compt, ind;
+	char compt[100]; 
+	char commande[100];
+	sprintf(compt, "ls ../data/Comptes | wc -l");
+    f = popen (compt, "r") ;
+    fgets(compt, 100, f);
+    i_compt = atoi(compt);
+    for(i = 0; i < i_compt-1; i++){
+    	sprintf(commande, "ls ../data/Comptes | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
+    	f = popen (commande, "r") ;
+    	fgets(commande, 100, f);
+    	ind = atoi(commande);
+    	LCinitCompte(ind, LCCompte);
+    }
+
+    FILE *f;
+	int i, i_compt, ind;
+	char compt[100]; 
+	char commande[100];
+	sprintf(compt, "ls ../data/Virements | wc -l");
+    f = popen (compt, "r") ;
+    fgets(compt, 100, f);
+    i_compt = atoi(compt);
+    for(i = 0; i < i_compt-1; i++){
+    	sprintf(commande, "ls ../data/Virements | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
+    	f = popen (commande, "r") ;
+    	fgets(commande, 100, f);
+    	ind = atoi(commande);
+    	LCinitVirement(ind, LCVirement);
+    }
 }
 
-Client lecture_fichier_json_client(int id, Client client)
+void lecture_fichier_json_client(int id, Client client) //CHECK VOID
 {
     FILE *f;
     char commande[100];
@@ -41,10 +80,9 @@ Client lecture_fichier_json_client(int id, Client client)
             printf("Error reading %d.json", id);
         }
     }
-    return client;
 }
 
-Compte lecture_fichier_json_compte(int id, Compte compte)
+void lecture_fichier_json_compte(int id, Compte compte) //CHECK
 {
     FILE *f;
     char commande[100];
@@ -74,10 +112,9 @@ Compte lecture_fichier_json_compte(int id, Compte compte)
             printf("Error reading %d.json", id);
         }
     }
-    return compte;
 }
 
-Virement lecture_fichier_json_virement(int id, Virement virement)
+void lecture_fichier_json_virement(int id, Virement virement) //CHECK
 {
     FILE *f;
     char commande[100];
@@ -89,73 +126,43 @@ Virement lecture_fichier_json_virement(int id, Virement virement)
         fgets(commande, 100, f);
         printf("%s", commande);
     }
-    return virement;
 }
 
 void creer_fichier_json_client(int id_client, char *nom, char *prenom, int numero_tel, char *mdp)
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    char id[12];
-    sprintf(id, "%d", id_client);
-    strcat(nom_fichier, "../data/Clients/");
-    strcat(nom_fichier, id);
-    strcat(nom_fichier, ".json");
+    sprintf(nom_fichier, "../data/Clients/%d.json", id_client);
     fichier = fopen(nom_fichier, "w");
-    char num[12];
-    sprintf(num, "%d", numero_tel);
     if (fichier != NULL)
     {
-        fprintf(fichier, "{\n\t\"id_client\" : \"%s\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%s\",\n\t\"mdp\" : \"%s\"\n}", id, nom, prenom, num, mdp);
+        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", id_client, nom, prenom, numero_tel, mdp);
         fclose(fichier);
     }
 }
 
-void creer_fichier_json_compte(int id_compte, char type, int id_client1, int id_client2, double montant, int locker)
+void creer_fichier_json_compte(int id_compte, char type, int id_client1, int id_client2, double montant, char locker)
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    char id[12];
-    sprintf(id, "%d", id_compte);
-    strcat(nom_fichier, "../data/Comptes/");
-    strcat(nom_fichier, id);
-    strcat(nom_fichier, ".json");
+    sprintf(nom_fichier, "./data/Comptes/%d.json", id_compte);
     fichier = fopen(nom_fichier, "w");
-    char idc1[12];
-    sprintf(idc1, "%d", id_client1);
-    char idc2[12];
-    sprintf(idc2, "%d", id_client2);
-    char l[12];
-    sprintf(l, "%d", locker);
-    char m[12];
-    sprintf(m, "%lf", montant);
-    char t[2];
-    t[0] = type;
-    t[1] = '\0';
     if (fichier != NULL)
     {
-        fprintf(fichier, "{\n\t\"id_compte\" : \"%s\",\n\t\"type\" : \"%s\",\n\t\"id_client1\" : \"%s\",\n\t\"id_client2\" : \"%s\",\n\t\"montant\" : \"%s\",\n\t\"locker\" : \"%s\"\n}", id, t, idc1, idc2, m, l);
+        fprintf(fichier, "{\n\t\"id_compte\" : \"%d\",\n\t\"type\" : \"%c\",\n\t\"id_client1\" : \"%d\",\n\t\"id_client2\" : \"%d\",\n\t\"montant\" : \"%lf\",\n\t\"locker\" : \"%c\"\n}", id_compte, type, id_client1, id_client2, montant, locker);
         fclose(fichier);
     }
 }
 
-void creer_fichier_json_virement(int id_compteFrom, int id_compteTo, char *date, double montant)
+void creer_fichier_json_virement(int id, int id_compteFrom, int id_compteTo, char *date, double montant)
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    char id[12];
-    sprintf(id, "%d", id_compteFrom);
-    strcat(nom_fichier, "../data/Virements/");
-    strcat(nom_fichier, id);
-    strcat(nom_fichier, ".json");
+    sprintf(nom_fichier, "../data/Virements/%d.json", id);
     fichier = fopen(nom_fichier, "w");
-    char idc1[12];
-    sprintf(idc1, "%d", id_compteTo);
-    char m[12];
-    sprintf(m, "%lf", montant);
     if (fichier != NULL)
     {
-        fprintf(fichier, "{\n\t\"id_compteFrom\" : \"%s\",\n\t\"id_compteTo\" : \"%s\",\n\t\"date\" : \"%s\",\n\t\"montant\" : \"%s\"\n}", id, idc1, date, m);
+        fprintf(fichier, "{\n\t\"id_compteFrom\" : \"%d\",\n\t\"id_compteTo\" : \"%d\",\n\t\"date\" : \"%s\",\n\t\"montant\" : \"%lf\"\n}", id_compteFrom, id_compteTo, date, montant);
         fclose(fichier);
     }
 }
@@ -196,7 +203,7 @@ Client login(Client LCClient)
         printf("mot de passe : ");
         scanf("%s", mdp);
         hachage_mdp(&mdp);
-        LCClient = cr_client(nom, prenom, numero_tel, mdp);
+        cr_client(LCClient, nom, prenom, numero_tel, mdp);
     }
     return LCClient;
 }
@@ -270,7 +277,7 @@ void menu_client(Client client)
     }
 }
 
-int menu_client_gestionComptes(Client client)
+void menu_client_gestionComptes(Client client)
 {
     system("clear");
     int choix;

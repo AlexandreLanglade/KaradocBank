@@ -13,7 +13,12 @@ struct Compte_s
 
 int
 getIndexCompte(){
-    //TODO théau
+    FILE *file;
+	file = fopen("../data/Comptes/index.txt", "r");
+	char temp[10];
+	fgets(temp, 10, file);
+	int index = atoi(temp);
+	return index;
 }
 
 void
@@ -35,7 +40,7 @@ void
 LCinitCompte(int index, Compte LCcompte) {
     Compte res;
     res = malloc(sizeof(Compte));
-    //TODO theau : chercher le bon fichier puis remplir res par lecture du fichier
+    lecture_fichier_json_compte(index, res);
     addLCCompte(LCcompte, res);
 }
 
@@ -99,10 +104,12 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
     mto = to[2]*10 + to[3];
     ato = to[4]*1000 + to[5]*100 + to[6]*10 + to[7];
     FILE * fichierexport = NULL;
-    fichierexport = fopen(???); /* todo theau : peux tu
+    char nom_fichier[50] = "";
+    sprintf(nom_fichier, "../data/export/%d_%s_%s.csv", getIdCompte(compte), from, to);
+    fichierexport = fopen(nom_fichier, "r"); /* todo theau : peux tu
         faire en sorte que le nom du fichier créé (dans data/export/) soit de la forme:
         "idcompte datefrom dateto.csv" stp et ouvert en écriture
-    */
+    */ //est ce que c'est grave si le nom est au format "idcompte_datefrom_dateto.csv" ?
     fputs("From,To,Date,Value", fichierexport);
     Virement etude = LCvir;
     while(etude != NULL) {
@@ -138,7 +145,12 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
 void
 supprimerCompte(Compte LCcompte, Compte compte) {
     //LE COMPTE DOIT EXISTER !!!
-    //TODO théau : remove le json
+    //remove le json
+    char nom_fichier[30] = "";
+    sprintf(nom_fichier,"../data/Comptes/%d.json", getIdCompte(compte));
+    printf("%s", nom_fichier);
+    remove(nom_fichier);
+    //
     Compte etude = LCcompte;
     if (etude->compte_suivant == NULL) {
         LCcompte = NULL;

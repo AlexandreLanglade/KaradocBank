@@ -35,7 +35,7 @@ void afficherVirements(Compte compte, Virement LCvir);
     /*
     Affiche la liste des virements du compte
     */
-Compte LCinitCompte();
+void LCinitCompte(int index, Compte LCCompte);
     /*
     Retourne la liste chainée des comptes
     */
