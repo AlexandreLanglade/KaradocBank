@@ -14,7 +14,12 @@ struct TitulaireCompte_s
 
 int
 getIndexClient(){
-    //TODO théau
+    FILE *file;
+	file = fopen("../data/Clients/index.txt", "r");
+	char temp[10];
+	fgets(temp, 10, file);
+	int index = atoi(temp);
+	return index;
 }
 
 void
@@ -42,7 +47,7 @@ void
 LCinitClient(int index, Client LCclient){
     Client res;
     res = malloc(sizeof(Client));
-    //TODO theau : chercher le bon fichier puis remplir res par lecture du fichier
+    lecture_fichier_json_client(index, res);
     addLCClient(LCclient, res);
 }
 
