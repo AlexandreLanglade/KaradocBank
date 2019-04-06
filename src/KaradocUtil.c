@@ -549,10 +549,42 @@ void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
             }       
             break;
         case 2 :
-            //TODO
+            int idc;
+            double nm;
+            printf("id du compte à midifier : ");
+            scanf("%d", &idc);
+            printf("nouveau montant : ");
+            scanf("%lf", &nm);
+            setMontant(findCompte(idc, LC_Compte), nm);
+            creer_fichier_json_compte(findCompte(idc, LC_Compte));
             break;
         case 3 :
-            //TODO
+            printf("Requetes de suppression de compte :\n");
+            Compte etude = LC_Compte;
+            while(etude != NULL){
+                if (getLock(etude) == 2) {
+                    toprintcompte(etude);
+                    int ok;
+                    printf("accepter la suppression (0 non 1 oui) : ");
+                    scanf("%d", &ok);
+                    if (ok == 1) {
+                        supprimerCompte(LC_Compte, etude);
+                    } else {     
+                        setLock(etude, 0);
+                        creer_fichier_json_compte(etude);
+                    }                  
+                }
+                etude = getNextCompte(etude);
+            }
+            int ok;
+            printf("Supprimer un compte (0 non 1 oui) ");
+            scanf("%d", &ok);
+            if (ok == 1) {
+                int idc;
+                printf("id du compte à supprimer : ");
+                scanf("%d", idc);
+                supprimerCompte(LC_Compte, findCompte(idc, LC_Compte));
+            }       
             break;
         case 4 :
             menu_admin_gestionComptes(LC_Client, LC_Compte, LC_Virement);
