@@ -5,11 +5,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "type.h"
 #include "KaradocUtil.h"
-
-//--------------STRUCT--------------
-
-typedef struct TitulaireCompte_s * Client;
 
 //--------------METHODS--------------
 

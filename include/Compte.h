@@ -5,12 +5,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "type.h"
 #include "Virement.h"
 #include "KaradocUtil.h"
-
-//--------------STRUCT--------------
-
-typedef struct Compte_s * Compte;
 
 //--------------METHODS--------------
 

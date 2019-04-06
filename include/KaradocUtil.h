@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "type.h"
 #include "Compte.h"
 #include "TitulaireCompte.h"
 #include "Virement.h"
@@ -62,13 +63,13 @@ void hachage_mdp(char * mdp);
     retourne la version md5 de l'entrée
     */
 
-void menuAdmin(Client LC_Client, Compte LC_Compte, Virement LC_Virement);
+void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement);
     /*
     affiche le menu des possibilités de l'admin
     + retourne son choix d'action
     */
 
-void menuClient(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement);
+void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement);
     /*
     affiche le menu des possibilités pour un client
     + retourne son choix d'action

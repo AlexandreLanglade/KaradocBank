@@ -25,7 +25,7 @@ Virement cr_virement(int id_compteFrom, int id_compteTo, double montant)
     res = malloc(sizeof(Virement));
     res->id_compteFrom = id_compteFrom;
     res->id_compteTo = id_compteTo;
-    res->date = date; // TODO pas en param mais ici, non?
+    //res->date = date; // TODO pas en param mais ici, non?
     res->montant = montant;
     creer_fichier_json_virement(getIndex(), res->id_compteFrom, res->id_compteTo, res->date, res->montant);
     return res;
@@ -36,7 +36,7 @@ void LCinitVirement(int index, Virement LCVirement)
     Virement res;
     res = malloc(sizeof(Virement));
     lecture_fichier_json_virement(index, res);
-    addLCClient(LCVirement, res);
+    addLCVirement(LCVirement, res);
 }
 
 void addLCVirement(Virement LCVirement, Virement vir)

@@ -18,10 +18,10 @@ void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
     	LCinitClient(ind, LCClient);
     }
 
-    FILE *f;
+/*    FILE *f;
 	int i, i_compt, ind;
 	char compt[100]; 
-	char commande[100];
+	char commande[100];     */
 	sprintf(compt, "ls ../data/Comptes | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
@@ -34,10 +34,10 @@ void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
     	LCinitCompte(ind, LCCompte);
     }
 
-    FILE *f;
+/*    FILE *f;
 	int i, i_compt, ind;
 	char compt[100]; 
-	char commande[100];
+	char commande[100];     */
 	sprintf(compt, "ls ../data/Virements | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
@@ -185,7 +185,7 @@ Client login(Client LCClient)
         scanf("%s", mdp);
         hachage_mdp(&mdp);
         while(getClientSuivant(LCClient) != NULL && getIdClient(LCClient) != login) {
-            LCClient = getClientSuivant(LCClient);
+            LCClient = getClientSuivant(LCClient); //WHAAAAAAAAAAAAAAT ???
         }
         if(getIdClient(LCClient) != login || strcmp(mdp, getMdp(LCClient))) return NULL;
     } else {
@@ -304,12 +304,13 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
     switch(choix) {
         case 1 :
             //TODO choix des dates
-            exporterCompte(LC_Virement, findCompte(compteActif,LC_Compte), /*TODO date*/);
+            //exporterCompte(LC_Virement, findCompte(compteActif,LC_Compte),) /*TODO date*/);
             break;
         case 2 :
             afficherVirements(findCompte(compteActif, LC_Compte), LC_Virement);
             break;
         case 3 :
+        {
             double montant = -1;
             int to;
             printf("Montant du virement : ");
@@ -324,6 +325,7 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
             creer_fichier_json_compte(findCompte(to, LC_Compte));
             cr_virement(compteActif, to, montant);
             break;
+        }
         case 4 :
             menu_client(client, LC_Client, LC_Compte, LC_Virement);
         default :
@@ -355,13 +357,14 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
+        {
             char choixtype;
             printf("'a' pour livret A, 'p' pour PEL, 'c' pour compte courant, type : ");
             while(choixtype != 'a' && choixtype != 'p' && choixtype != 'c'){
                 scanf("%c", &choixtype);              
             }            
             if (choixtype != 'c') {
-                cr_compte(LC_Compte, getIdClient(client), NULL, choixtype);
+                cr_compte(LC_Compte, getIdClient(client), -1, choixtype);
             } else {
                 int clientdeux;
                 printf("Id du second propriétaire du compte (-1 pour aucun) : ");
@@ -374,7 +377,9 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
                 cr_compte(LC_Compte, getIdClient(client), clientdeux, 'c');
             }            
             break;
+        }
         case 2 :
+        {
             int idcompteasuppr;
             printf("id du compte à supprimer : ");
             while(getIdClient1(findCompte(idcompteasuppr, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(idcompteasuppr, LC_Compte)) != getIdClient(client)){
@@ -383,7 +388,9 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
             setLock(findCompte(idcompteasuppr, LC_Compte), 2);
             creer_fichier_json_compte(findCompte(idcompteasuppr, LC_Compte));
             break;
+        }
         case 3 :
+        {
             char newmdp[100];
             printf("nouveau mot de passe : ");
             scanf("%s", newmdp);
@@ -391,6 +398,7 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
             setMdp(client, newmdp);
             creer_fichier_json_client(client);
             break;
+        }
         case 4 :
             menu_client(client, LC_Client, LC_Compte, LC_Virement);
         default :
@@ -437,6 +445,7 @@ void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_V
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
+        {
             char nom[15];
             printf("Nom : ");
             scanf("%s", nom);
@@ -445,29 +454,34 @@ void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_V
             scanf("%s", prenom);
             int num;
             printf("Num : ");
-            scanf("%d", num);
+            scanf("%d", &num);
             char mdp[100];
             printf("nouveau mot de passe : ");
             scanf("%s", mdp);
             hachage_mdp(mdp);
             cr_client(LC_Client, nom, prenom, num, mdp);
             break;
+        }
         case 2 :
+        {
             int idclient;
             printf("id du client : ");
             scanf("%d", &idclient);
-            int num;
-            printf("Num : ");
-            scanf("%d", num);
-            setNum(findClient(idclient, LC_Client), num);
+            int numero;
+            printf("Numéro : ");
+            scanf("%d", &numero);
+            setNum(findClient(idclient, LC_Client), numero);
             creer_fichier_json_client(findClient(idclient, LC_Client));
             break;
+        }
         case 3 :
+        {
             int idcompte;
             printf("id du compte : ");
             scanf("%d", &idcompte);
             titulairesCompte(findCompte(idcompte, LC_Compte));
             break;
+        }
         case 4 :
             menu_admin(LC_Client, LC_Compte, LC_Virement);
         default :
@@ -487,6 +501,7 @@ void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_V
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
+        {
             char newmdp[100];
             printf("nouveau mot de passe : ");
             scanf("%s", newmdp);
@@ -494,6 +509,7 @@ void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_V
             setMdp(findClient(0, LC_Client), newmdp);
             creer_fichier_json_client(findClient(0, LC_Client));
             break;
+        }
         case 2 :
             menu_admin(LC_Client, LC_Compte, LC_Virement);
             break;
@@ -549,6 +565,7 @@ void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
             }       
             break;
         case 2 :
+        {
             int idc;
             double nm;
             printf("id du compte à midifier : ");
@@ -558,31 +575,32 @@ void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
             setMontant(findCompte(idc, LC_Compte), nm);
             creer_fichier_json_compte(findCompte(idc, LC_Compte));
             break;
+        }
         case 3 :
             printf("Requetes de suppression de compte :\n");
-            Compte etude = LC_Compte;
-            while(etude != NULL){
-                if (getLock(etude) == 2) {
-                    toprintcompte(etude);
+            Compte etude2 = LC_Compte;
+            while(etude2 != NULL){
+                if (getLock(etude2) == 2) {
+                    toprintcompte(etude2);
                     int ok;
                     printf("accepter la suppression (0 non 1 oui) : ");
                     scanf("%d", &ok);
                     if (ok == 1) {
-                        supprimerCompte(LC_Compte, etude);
+                        supprimerCompte(LC_Compte, etude2);
                     } else {     
-                        setLock(etude, 0);
-                        creer_fichier_json_compte(etude);
+                        setLock(etude2, 0);
+                        creer_fichier_json_compte(etude2);
                     }                  
                 }
-                etude = getNextCompte(etude);
+                etude2 = getNextCompte(etude2);
             }
-            int ok;
+            int ok2;
             printf("Supprimer un compte (0 non 1 oui) ");
-            scanf("%d", &ok);
-            if (ok == 1) {
+            scanf("%d", &ok2);
+            if (ok2 == 1) {
                 int idc;
                 printf("id du compte à supprimer : ");
-                scanf("%d", idc);
+                scanf("%d", &idc);
                 supprimerCompte(LC_Compte, findCompte(idc, LC_Compte));
             }       
             break;
