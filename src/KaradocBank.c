@@ -5,10 +5,13 @@ int main(int argv, char *argc)
     Client LC_Client;
     Compte LC_Compte;
     Virement LC_Virement;
+    LC_Virement = malloc(sizeof(Virement));
+    LC_Compte = malloc(sizeof(Compte));
+    LC_Client = malloc(sizeof(Client));
     initialisation(LC_Compte, LC_Client, LC_Virement);
     printf("%s", getNom(findClient(0, LC_Client)));
-    Client client_actif = NULL;
-    /*while(client_actif == NULL) client_actif = login(client_actif);
+    /*Client client_actif = NULL;
+    while(client_actif == NULL) client_actif = login(client_actif);
     if(getIdClient(client_actif) == 0){
         menu_admin(LC_Client, LC_Compte, LC_Virement);
     } else {
