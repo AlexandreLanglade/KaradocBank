@@ -185,6 +185,7 @@ afficherVirements(Compte compte, Virement LCvir) {
 void
 addLCCompte(Compte LCCompte, Compte compte) {
     if (LCCompte == NULL) {
+        LCCompte = malloc(sizeof(Compte));
         LCCompte = compte;
     } else {
         Compte etude = LCCompte;

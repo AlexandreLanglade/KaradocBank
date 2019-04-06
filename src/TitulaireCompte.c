@@ -54,8 +54,8 @@ LCinitClient(int index, Client LCclient){
 void
 addLCClient(Client LCClient, Client client){
     if (LCClient == NULL) {
+        LCClient = malloc(sizeof(Client));
         LCClient = client;
-        printf("la ca marche\n");
     } else {
         Client etude = LCClient;
         while(etude->client_suivant != NULL){
@@ -68,8 +68,9 @@ addLCClient(Client LCClient, Client client){
 
 Client
 findClient(int id, Client LCClient) {
-    Client etude = LCClient;
-    while(getIdClient(etude) != id && etude != NULL){
+    Client etude = malloc(sizeof(Client));
+    etude = LCClient;
+    while(etude != NULL && getIdClient(etude) != id){
         etude = etude->client_suivant;
     }
     return etude;

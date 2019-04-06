@@ -55,6 +55,7 @@ void lecture_fichier_json_client(int id, Client client) //CHECK VOID
         switch(i) {
             case 6 :
             setId(client, atoi(commande));
+            break;
             case 5 :
             setNom(client, commande);
             break;
