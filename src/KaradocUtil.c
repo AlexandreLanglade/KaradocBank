@@ -1,7 +1,5 @@
 #include "../include/KaradocUtil.h"
 
-//TODO : REMPLASSER TODO DANS LES SWITCHS PAR DES FONCTIONS (de TitulaireCompte.c ?)
-
 void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
 {
     FILE *f;
@@ -128,28 +126,28 @@ void lecture_fichier_json_virement(int id, Virement virement) //CHECK
     }
 }
 
-void creer_fichier_json_client(int id_client, char *nom, char *prenom, int numero_tel, char *mdp)
+void creer_fichier_json_client(Client client)
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    sprintf(nom_fichier, "../data/Clients/%d.json", id_client);
+    sprintf(nom_fichier, "../data/Clients/%d.json", getIdClient(client));
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
     {
-        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", id_client, nom, prenom, numero_tel, mdp);
+        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), getNom(client), getPrenom(client), getNum(client), getMdp(client));
         fclose(fichier);
     }
 }
 
-void creer_fichier_json_compte(int id_compte, char type, int id_client1, int id_client2, double montant, char locker)
+void creer_fichier_json_compte(Compte compte)
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    sprintf(nom_fichier, "./data/Comptes/%d.json", id_compte);
+    sprintf(nom_fichier, "./data/Comptes/%d.json", getIdCompte(compte));
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
     {
-        fprintf(fichier, "{\n\t\"id_compte\" : \"%d\",\n\t\"type\" : \"%c\",\n\t\"id_client1\" : \"%d\",\n\t\"id_client2\" : \"%d\",\n\t\"montant\" : \"%lf\",\n\t\"locker\" : \"%c\"\n}", id_compte, type, id_client1, id_client2, montant, locker);
+        fprintf(fichier, "{\n\t\"id_compte\" : \"%d\",\n\t\"type\" : \"%c\",\n\t\"id_client1\" : \"%d\",\n\t\"id_client2\" : \"%d\",\n\t\"montant\" : \"%lf\",\n\t\"locker\" : \"%c\"\n}", getIdCompte(compte), getType(compte), getIdClient1(compte), getIdClient2(compte), getMontant(compte), getLock(compte));
         fclose(fichier);
     }
 }
@@ -222,7 +220,7 @@ void hachage_mdp(char *mdp)
     *mdp = hache;
 }
 
-void menu_admin()
+void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
     system("clear");
@@ -234,24 +232,24 @@ void menu_admin()
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
-        menu_admin_gestionComptes();
-        break;
+            menu_admin_gestionComptes(LC_Client, LC_Compte, LC_Virement);
+            break;
         case 2 :
-        menu_admin_gestionClients();
-        break;
+            menu_admin_gestionClients(LC_Client, LC_Compte, LC_Virement);
+            break;
         case 3 :
-        menu_admin_administration();
-        break;
+            menu_admin_administration(LC_Client, LC_Compte, LC_Virement);
+            break;
         case 4 :
-        exit(EXIT_SUCCESS);
-        break;
+            exit(EXIT_SUCCESS);
+            break;
         default :
-        printf("error\n");
-        break;
+            printf("error\n");
+            break;
     }
 }
 
-void menu_client(Client client)
+void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
     system("clear");
@@ -263,56 +261,93 @@ void menu_client(Client client)
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
-        menu_client_gestionComptes(client);
-        break;
+            menu_client_gestionComptes(client, LC_Client, LC_Compte, LC_Virement);
+            break;
         case 2 :
-        menu_client_administration(client);
-        break;
+            menu_client_administration(client, LC_Client, LC_Compte, LC_Virement);
+            break;
         case 3 :
-        exit(EXIT_SUCCESS);
-        break;
+            exit(EXIT_SUCCESS);
+            break;
         default :
-        printf("error\n");
-        break;
+            printf("error\n");
+            break;
     }
 }
 
-void menu_client_gestionComptes(Client client)
+void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     system("clear");
     int choix;
     printf("client_actif : %s %s", getNom(client), getPrenom(client));
     printf("----Gestion des Comptes----\n");
-    printf("1/ solde\n");
-    printf("2/ liste des opérations\n");
-    printf("3/ consulter virements\n");
+    Compte etude = LC_Compte;
+    while(etude != NULL){
+        if (getIdClient1(etude) == getIdClient(client) || getIdClient2(etude) == getIdClient(client)) {
+            if (getLock(etude) != 1) {
+                toprintcompte(etude);
+            }            
+        }
+        etude = getNextCompte(etude);
+    }
+    free(etude);
+    printf("1/ liste des opérations\n");
+    printf("2/ consulter virements\n");
+    printf("3/ Faire un virement\n");
     printf("4/ Retour\n");
     scanf("%d", &choix);
+    int compteActif;
+    printf("Id du compte pour l'action : ");
+    while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
+        scanf("%d", &compteActif);
+    }    
     switch(choix) {
         case 1 :
-        //TODO Consulter solde
-        break;
+            //TODO choix des dates
+            exporterCompte(LC_Virement, findCompte(compteActif,LC_Compte), /*TODO date*/);
+            break;
         case 2 :
-        //TODO liste des opérations
-        break;
+            afficherVirements(findCompte(compteActif, LC_Compte), LC_Virement);
+            break;
         case 3 :
-        //TODO consulter virements
-        break;
+            double montant = -1;
+            int to;
+            printf("Montant du virement : ");
+            while(montant <=0 || montant > getMontant(findCompte(compteActif, LC_Compte))){
+                scanf("%lf", & montant);
+            }
+            printf("id du compte cible :");
+            scanf("%d", &to);
+            setMontant(findCompte(compteActif,LC_Compte), getMontant(findCompte(compteActif, LC_Compte))-montant);
+            setMontant(findCompte(to,LC_Compte), getMontant(findCompte(to, LC_Compte))+montant);
+            creer_fichier_json_compte(findCompte(compteActif, LC_Compte));
+            creer_fichier_json_compte(findCompte(to, LC_Compte));
+            cr_virement(compteActif, to, montant);
+            break;
         case 4 :
-        menu_client(client);
+            menu_client(client, LC_Client, LC_Compte, LC_Virement);
         default :
-        printf("Error");
-        break;
+            printf("Error");
+            break;
     }
-    return choix;
 }
 
-void menu_client_administration(Client client)
+void menu_client_administration(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     system("clear");
     int choix;
     printf("client_actif : %s %s", getNom(client), getPrenom(client));
     printf("----Administration----\n");
+    Compte etude = LC_Compte;
+    while(etude != NULL){
+        if (getIdClient1(etude) == getIdClient(client) || getIdClient2(etude) == getIdClient(client)) {
+            if (getLock(etude) != 1) {
+                toprintcompte(etude);
+            }            
+        }
+        etude = getNextCompte(etude);
+    }
+    free(etude);
     printf("1/ creation compte\n");
     printf("2/ suppression compte\n");
     printf("3/ changer mot de passe\n");
@@ -320,23 +355,51 @@ void menu_client_administration(Client client)
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
-        //TODO CREER FONCTION
-        break;
+            char choixtype;
+            printf("'a' pour livret A, 'p' pour PEL, 'c' pour compte courant, type : ");
+            while(choixtype != 'a' && choixtype != 'p' && choixtype != 'c'){
+                scanf("%c", &choixtype);              
+            }            
+            if (choixtype != 'c') {
+                cr_compte(LC_Compte, getIdClient(client), NULL, choixtype);
+            } else {
+                int clientdeux;
+                printf("Id du second propriétaire du compte (-1 pour aucun) : ");
+                while(clientdeux == 0 || findClient(clientdeux, LC_Client) == NULL){
+                    scanf("%d", &clientdeux);
+                    if (clientdeux == -1) {
+                        break;
+                    }
+                }
+                cr_compte(LC_Compte, getIdClient(client), clientdeux, 'c');
+            }            
+            break;
         case 2 :
-        //TODO CREER FONCTION
-        break;
+            int idcompteasuppr;
+            printf("id du compte à supprimer : ");
+            while(getIdClient1(findCompte(idcompteasuppr, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(idcompteasuppr, LC_Compte)) != getIdClient(client)){
+                scanf("%d", &idcompteasuppr);
+            }
+            setLock(findCompte(idcompteasuppr, LC_Compte), 2);
+            creer_fichier_json_compte(findCompte(idcompteasuppr, LC_Compte));
+            break;
         case 3 :
-        //TODO CREER FONCTION
-        break;
+            char newmdp[100];
+            printf("nouveau mot de passe : ");
+            scanf("%s", newmdp);
+            hachage_mdp(newmdp);
+            setMdp(client, newmdp);
+            creer_fichier_json_client(client);
+            break;
         case 4 :
-        menu_client(client);
+            menu_client(client, LC_Client, LC_Compte, LC_Virement);
         default :
-        printf("Error");
-        break;
+            printf("Error");
+            break;
     }
 }
 
-void menu_admin_gestionComptes()
+void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
     system("clear");
@@ -348,20 +411,20 @@ void menu_admin_gestionComptes()
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
-        //TODO
-        break;
+            menu_c(LC_Client, LC_Compte, LC_Virement);
+            break;
         case 2 :
-        //TODO
-        break;
+            afficherComptes(LC_Compte);
+            break;
         case 3 :
-        menu_admin();
+            menu_admin(LC_Client, LC_Compte, LC_Virement);
         default :
-        printf("Error");
-        break;
+            printf("Error");
+            break;
     }
 }
 
-void menu_admin_gestionClients()
+void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
     system("clear");
@@ -374,23 +437,46 @@ void menu_admin_gestionClients()
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
-        //TODO
-        break;
+            char nom[15];
+            printf("Nom : ");
+            scanf("%s", nom);
+            char prenom[15];
+            printf("Prenom : ");
+            scanf("%s", prenom);
+            int num;
+            printf("Num : ");
+            scanf("%d", num);
+            char mdp[100];
+            printf("nouveau mot de passe : ");
+            scanf("%s", mdp);
+            hachage_mdp(mdp);
+            cr_client(LC_Client, nom, prenom, num, mdp);
+            break;
         case 2 :
-        //TODO
-        break;
+            int idclient;
+            printf("id du client : ");
+            scanf("%d", &idclient);
+            int num;
+            printf("Num : ");
+            scanf("%d", num);
+            setNum(findClient(idclient, LC_Client), num);
+            creer_fichier_json_client(findClient(idclient, LC_Client));
+            break;
         case 3 :
-        //TODO
-        break;
+            int idcompte;
+            printf("id du compte : ");
+            scanf("%d", &idcompte);
+            titulairesCompte(findCompte(idcompte, LC_Compte));
+            break;
         case 4 :
-        menu_admin();
+            menu_admin(LC_Client, LC_Compte, LC_Virement);
         default :
-        printf("Error");
-        break;
+            printf("Error");
+            break;
     }
 }
 
-void menu_admin_administration()
+void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
     system("clear");
@@ -401,12 +487,77 @@ void menu_admin_administration()
     scanf("%d", &choix);
     switch(choix) {
         case 1 :
-        //TODO
-        break;
+            char newmdp[100];
+            printf("nouveau mot de passe : ");
+            scanf("%s", newmdp);
+            hachage_mdp(newmdp);
+            setMdp(findClient(0, LC_Client), newmdp);
+            creer_fichier_json_client(findClient(0, LC_Client));
+            break;
         case 2 :
-        menu_admin();
+            menu_admin(LC_Client, LC_Compte, LC_Virement);
+            break;
         default :
-        printf("Error");
-        break;
+            printf("Error");
+            break;
+    }
+}
+
+void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
+{
+    int choix;
+    system("clear");
+    printf("admin\n");
+    printf("----Gestion des comptes----\n");
+    printf("1/ créer\n");
+    printf("2/ modifier\n");
+    printf("3/ supprimer\n");
+    printf("4/ Retour\n");
+    scanf("%d", &choix);
+    switch(choix) {
+        case 1 :
+            printf("Requetes de création de compte :\n");
+            Compte etude = LC_Compte;
+            while(etude != NULL){
+                if (getLock(etude) == 1) {
+                    toprintcompte(etude);
+                    int ok;
+                    printf("accepter la création (0 non 1 oui) : ");
+                    scanf("%d", &ok);
+                    if (ok == 1) {
+                        setLock(etude, 0);
+                        creer_fichier_json_compte(etude);
+                    } else {
+                        supprimerCompte(LC_Compte, etude);
+                    }                  
+                }
+                etude = getNextCompte(etude);
+            }
+            int ok;
+            printf("Créer un nouveau compte (0 non 1 oui) ");
+            scanf("%d", &ok);
+            if (ok == 1) {
+                int id1, id2;
+                char t;
+                printf("id client 1 :");
+                scanf("%d", &id1);
+                printf("id client 2 (-1 si non existant) :");
+                scanf("%d", &id2);
+                printf("type (a, p, c) :");
+                scanf("%c", &t);
+                cr_compte(LC_Compte, id1, id2, t);
+            }       
+            break;
+        case 2 :
+            //TODO
+            break;
+        case 3 :
+            //TODO
+            break;
+        case 4 :
+            menu_admin_gestionComptes(LC_Client, LC_Compte, LC_Virement);
+        default :
+            printf("Error");
+            break;
     }
 }

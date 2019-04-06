@@ -15,7 +15,7 @@ typedef struct Virement_s * Virement;
 
 int getIndex();
 
-Virement cr_virement(int id_comptefrom, int id_compteto, char date[8], double montant);
+Virement cr_virement(int id_comptefrom, int id_compteto, double montant);
 void LCinitVirement(int index, Virement LCVirement);
     /*
     Retourne la file chainée des virements

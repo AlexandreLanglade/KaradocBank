@@ -39,7 +39,7 @@ cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char m
     }    
     res->numero_tel = numero_tel;
     res->client_suivant = NULL;
-    creer_fichier_json_client(res->id_client, res->nom, res->prenom, res->numero_tel, res->mdp);
+    creer_fichier_json_client(res);
     addLCClient(LCclient, res);
 }
 
@@ -62,6 +62,16 @@ addLCClient(Client LCClient, Client client){
         }
         etude->client_suivant = client;
     }    
+}
+
+
+Client
+findClient(int id, Client LCClient) {
+    Client etude = LCClient;
+    while(getIdClient(etude) != id && etude != NULL){
+        etude = etude->client_suivant;
+    }
+    return etude;
 }
 
 void

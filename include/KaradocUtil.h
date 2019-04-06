@@ -33,12 +33,12 @@ void lecture_fichier_json_virement(int id, Virement virement); //TODO : RESOUDRE
     retourne les infos du virement dont l'id est mise en paramètre
     */
 
-void creer_fichier_json_client(int id_client, char *nom, char *prenom, int numero_tel, char *mdp);
+void creer_fichier_json_client(Client client);
     /*
     crée un nouveau fichier client rempli avec les infos données en paramètres
     */
 
-void creer_fichier_json_compte(int id_compte, char type, int id_client1, int id_client2, double montant, char locker);
+void creer_fichier_json_compte(Compte compte);
     /*
     crée un nouveau fichier compte rempli avec les infos données en paramètres
     */
@@ -62,26 +62,28 @@ void hachage_mdp(char * mdp);
     retourne la version md5 de l'entrée
     */
 
-void menuAdmin();
+void menuAdmin(Client LC_Client, Compte LC_Compte, Virement LC_Virement);
     /*
     affiche le menu des possibilités de l'admin
     + retourne son choix d'action
     */
 
-void menuClient(Client client);
+void menuClient(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement);
     /*
     affiche le menu des possibilités pour un client
     + retourne son choix d'action
     */
 
-void menu_client_gestionComptes(Client client);
+void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement);
 
-void menu_client_administration(Client client);
+void menu_client_administration(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement);
 
-void menu_admin_gestionComptes();
+void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_Virement);
 
-void menu_admin_gestionClients();
+void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_Virement);
 
-void menu_admin_administration();
+void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_Virement);
+
+void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement);
 
 #endif

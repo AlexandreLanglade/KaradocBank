@@ -19,13 +19,13 @@ getIndex(){
     return index;
 }
 
-Virement cr_virement(int id_compteFrom, int id_compteTo, char date[8], double montant)
+Virement cr_virement(int id_compteFrom, int id_compteTo, double montant)
 {
     Virement res;
     res = malloc(sizeof(Virement));
     res->id_compteFrom = id_compteFrom;
     res->id_compteTo = id_compteTo;
-    res->date = date; // pas en param mais ici, non?
+    res->date = date; // TODO pas en param mais ici, non?
     res->montant = montant;
     creer_fichier_json_virement(getIndex(), res->id_compteFrom, res->id_compteTo, res->date, res->montant);
     return res;

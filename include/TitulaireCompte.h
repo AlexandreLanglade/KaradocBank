@@ -25,6 +25,7 @@ void addLCClient(Client LCClient, Client client);
     Ajoute un client a une liste chainée de client
     */
 
+Client findClient(int id, Client LCClient);
 
 //#SET
 void setNom(Client client, char nom[15]);

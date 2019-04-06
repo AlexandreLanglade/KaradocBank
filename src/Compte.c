@@ -7,7 +7,7 @@ struct Compte_s
     int id_client1;
     int id_client2; //-1 si pas de deuxieme proprio
     double montant;
-    char locker;
+    char locker; //1 si lock 0 si normal 2 si demande de suppr
     Compte compte_suivant;
 };
 
@@ -32,7 +32,7 @@ cr_compte(Compte LCcompte, int id_client1, int id_client2, char type) {
     res->montant = 0;
     res->locker = 1;
     res->compte_suivant = NULL;
-    creer_fichier_json_compte(res->id_compte, res->type, res->id_client1, res->id_client2, res->montant, res->locker);
+    creer_fichier_json_compte(res);
     addLCCompte(LCcompte, res);
 }
 
@@ -48,20 +48,20 @@ void
 toprintcompte(Compte compte) {
     //TODO: ajouter nom + saucisse   
     if (compte->type == 'c') {
-        printf("%d C.COURANT %d %d %d\n",
+        printf("%d C.COURANT %d %d %lf\n",
         compte->id_compte,
         compte->id_client1,
         compte->id_client2,
         compte->montant);
     }
     if (compte->type == 'a') {
-        printf("%d LIVRET A %d %d\n",
+        printf("%d LIVRET A %d %lf\n",
         compte->id_compte,
         compte->id_client1,
         compte->montant);
     }
     if (compte->type == 'p') {
-        printf("%d PEL %d %d\n",
+        printf("%d PEL %d %lf\n",
         compte->id_compte,
         compte->id_client1,
         compte->montant);
@@ -113,7 +113,7 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
     fputs("From,To,Date,Value", fichierexport);
     Virement etude = LCvir;
     while(etude != NULL) {
-        if (getIdCompteFrom(etude) == compte || getIdCompteTo(etude) == compte) {
+        if (getIdCompteFrom(etude) == getIdCompte(compte) || getIdCompteTo(etude) == getIdCompte(compte)) {
             int jetude, metude, aetude;
             jetude = getDate(etude)[0]*10 + getDate(etude)[1];
             metude = getDate(etude)[2]*10 + getDate(etude)[3];
@@ -145,12 +145,10 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
 void
 supprimerCompte(Compte LCcompte, Compte compte) {
     //LE COMPTE DOIT EXISTER !!!
-    //remove le json
     char nom_fichier[30] = "";
     sprintf(nom_fichier,"../data/Comptes/%d.json", getIdCompte(compte));
     printf("%s", nom_fichier);
     remove(nom_fichier);
-    //
     Compte etude = LCcompte;
     if (etude->compte_suivant == NULL) {
         LCcompte = NULL;
@@ -167,7 +165,7 @@ supprimerCompte(Compte LCcompte, Compte compte) {
 void
 titulairesCompte(Compte compte) {
     //TODO: ajouter nom ?
-    if (compte->id_client2 != NULL) {
+    if (compte->id_client2 != -1) {
         printf("%d %d\n", compte->id_client1, compte->id_client2);
     } else {
         printf("%d\n", compte->id_client1);
@@ -178,7 +176,7 @@ void
 afficherVirements(Compte compte, Virement LCvir) {
     Virement etude = LCvir;
     while(etude != NULL){
-        if (getIdCompteFrom(etude) == compte || getIdCompteTo(etude) == compte){
+        if (getIdCompteFrom(etude) == getIdCompte(compte) || getIdCompteTo(etude) == getIdCompte(compte)){
             //TODO afficher avec diff si from ou to
         }
     }    
@@ -195,6 +193,15 @@ addLCCompte(Compte LCCompte, Compte compte) {
         }
         etude->compte_suivant = compte;
     }    
+}
+
+Compte
+findCompte(int id, Compte LCCompte) {
+    Compte etude = LCCompte;
+    while(getIdCompte(etude) != id && etude != NULL){
+        etude = etude->compte_suivant;
+    }
+    return etude;
 }
 
 void
@@ -249,4 +256,9 @@ getIdClient1(Compte compte) {
 int
 getIdClient2(Compte compte) {
     return compte->id_client2;
+}
+
+Compte
+getNextCompte(Compte compte) {
+    return compte->compte_suivant;
 }

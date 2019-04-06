@@ -44,6 +44,8 @@ void addLCCompte(Compte LCCompte, Compte compte);
     Ajoute un compte a une liste chainée de comptes
     */
 
+Compte findCompte(int id, Compte LCCompte);
+
 //#SET
 void setMontant(Compte compte, double montant);
 void setClient1(int id_client1, Compte compte);
@@ -58,6 +60,7 @@ char getType(Compte compte);
 int getIdCompte(Compte compte);
 int getIdClient1(Compte compte);
 int getIdClient2(Compte compte);
+Compte getNextCompte(Compte compte);
 
 
 #endif
