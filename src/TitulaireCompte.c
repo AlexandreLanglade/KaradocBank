@@ -48,11 +48,14 @@ LCinitClient(int index, Client LCclient){
     Client res;
     res = malloc(sizeof(Client));
     lecture_fichier_json_client(index, res);
+    printf("sur?\n");
     addLCClient(LCclient, res);
+    printf("et la?\n");
 }
 
 void
 addLCClient(Client LCClient, Client client){
+    printf("%s", getNom(client));
     if (LCClient == NULL) {
         LCClient = client;
     } else {
@@ -61,7 +64,8 @@ addLCClient(Client LCClient, Client client){
             etude = etude->client_suivant;
         }
         etude->client_suivant = client;
-    }    
+    }
+    printf("%s", getMdp(client));   
 }
 
 
@@ -72,6 +76,12 @@ findClient(int id, Client LCClient) {
         etude = etude->client_suivant;
     }
     return etude;
+}
+
+void
+setId(Client client, int id)
+{
+    client->id_client = id;
 }
 
 void

@@ -25,6 +25,7 @@ void addLCClient(Client LCClient, Client client);
 Client findClient(int id, Client LCClient);
 
 //#SET
+void setId(Client client, int id);
 void setNom(Client client, char nom[15]);
 void setPrenom(Client client, char prenom[15]);
 void setNum(Client client, int num);
