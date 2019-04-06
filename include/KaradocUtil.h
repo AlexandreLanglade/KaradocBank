@@ -58,7 +58,7 @@ Client login(Client LCClient);
     retourne NULL si inconnu pour que le programme main boucle
     */
 
-void hachage_mdp(char * mdp);
+char * hachage_mdp(char * mdp);
     /*
     retourne la version md5 de l'entrée
     */

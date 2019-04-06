@@ -6,44 +6,36 @@ void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
 	int i, i_compt, ind;
 	char compt[100]; 
 	char commande[100];
-	sprintf(compt, "ls ../data/Clients | wc -l");
+	sprintf(compt, "ls data/Clients | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
     i_compt = atoi(compt);
     for(i = 0; i < i_compt-1; i++){
-    	sprintf(commande, "ls ../data/Clients | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
+    	sprintf(commande, "ls data/Clients | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
     	f = popen (commande, "r") ;
     	fgets(commande, 100, f);
     	ind = atoi(commande);
     	LCinitClient(ind, LCClient);
     }
 
-/*    FILE *f;
-	int i, i_compt, ind;
-	char compt[100]; 
-	char commande[100];     */
-	sprintf(compt, "ls ../data/Comptes | wc -l");
+	sprintf(compt, "ls data/Comptes | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
     i_compt = atoi(compt);
     for(i = 0; i < i_compt-1; i++){
-    	sprintf(commande, "ls ../data/Comptes | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
+    	sprintf(commande, "ls data/Comptes | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
     	f = popen (commande, "r") ;
     	fgets(commande, 100, f);
     	ind = atoi(commande);
     	LCinitCompte(ind, LCCompte);
     }
 
-/*    FILE *f;
-	int i, i_compt, ind;
-	char compt[100]; 
-	char commande[100];     */
-	sprintf(compt, "ls ../data/Virements | wc -l");
+	sprintf(compt, "ls data/Virements | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
     i_compt = atoi(compt);
     for(i = 0; i < i_compt-1; i++){
-    	sprintf(commande, "ls ../data/Virements | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
+    	sprintf(commande, "ls data/Virements | tail -n%d | head -n1 | cut -f1 -d '.'", i_compt-i);
     	f = popen (commande, "r") ;
     	fgets(commande, 100, f);
     	ind = atoi(commande);
@@ -55,13 +47,14 @@ void lecture_fichier_json_client(int id, Client client) //CHECK VOID
 {
     FILE *f;
     char commande[100];
-    char compt[100];
     int  i;
     for(i = 6; i >= 2; i--) {
-        sprintf(commande, "cat ../data/Clients/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
+        sprintf(commande, "cat data/Clients/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
         f = popen (commande, "r") ;
-        fgets(commande, 100, f);
+        fgets(commande, 32, f);
         switch(i) {
+            case 6 :
+            setId(client, atoi(commande));
             case 5 :
             setNom(client, commande);
             break;
@@ -75,7 +68,7 @@ void lecture_fichier_json_client(int id, Client client) //CHECK VOID
             setMdp(client, commande);
             break;
             default :
-            printf("Error reading %d.json", id);
+            printf("Client : Error reading %d.json\n", id);
         }
     }
 }
@@ -87,12 +80,12 @@ void lecture_fichier_json_compte(int id, Compte compte) //CHECK
     char compt[100];
     int  i;
     for(i = 7; i >= 2; i--) {
-        sprintf(commande, "cat ../data/Comptes/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
+        sprintf(commande, "cat data/Comptes/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
         f = popen (commande, "r") ;
         fgets(commande, 100, f);
         switch(i) {
             case 6 :
-            setType(compte, commande);
+            setType(compte, commande[0]);
             break;
             case 5 :
             setClient1(atoi(commande), compte);
@@ -104,10 +97,10 @@ void lecture_fichier_json_compte(int id, Compte compte) //CHECK
             setMontant(compte, atof(commande));
             break;
             case 2 :
-            setLock(compte, commande);
+            setLock(compte, commande[0]);
             break;
             default :
-            printf("Error reading %d.json", id);
+            printf("Error reading %d.json\n", id);
         }
     }
 }
@@ -119,7 +112,7 @@ void lecture_fichier_json_virement(int id, Virement virement) //CHECK
     char compt[100];
     int  i;
     for(i = 5; i >= 2; i--) {
-        sprintf(commande, "cat ../data/Virements/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
+        sprintf(commande, "cat data/Virements/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
         f = popen (commande, "r") ;
         fgets(commande, 100, f);
         printf("%s", commande);
@@ -130,7 +123,7 @@ void creer_fichier_json_client(Client client)
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    sprintf(nom_fichier, "../data/Clients/%d.json", getIdClient(client));
+    sprintf(nom_fichier, "data/Clients/%d.json", getIdClient(client));
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
     {
@@ -143,7 +136,7 @@ void creer_fichier_json_compte(Compte compte)
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    sprintf(nom_fichier, "./data/Comptes/%d.json", getIdCompte(compte));
+    sprintf(nom_fichier, "data/Comptes/%d.json", getIdCompte(compte));
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
     {
@@ -156,7 +149,7 @@ void creer_fichier_json_virement(int id, int id_compteFrom, int id_compteTo, cha
 {
     FILE *fichier;
     char nom_fichier[100] = "";
-    sprintf(nom_fichier, "../data/Virements/%d.json", id);
+    sprintf(nom_fichier, "data/Virements/%d.json", id);
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
     {
@@ -171,27 +164,22 @@ Client login(Client LCClient)
     printf("1/ Login\n2/ Nouveau Client ?\n3/ Quitter\n");
     scanf("%d", &answer);
     if(answer == 3) exit(EXIT_SUCCESS);
-    system("clear");
     int login;
     char nom[15];
     char prenom[15];
     int numero_tel;
-    char mdp[35];
+    char *mdp;
+    mdp = malloc(40*sizeof(char));
     if(answer == 1){
-        printf("----LOGIN----");
+        printf("----LOGIN----\n");
         printf("login : ");
         scanf("%d", &login);
         printf("mot de passe : ");
         scanf("%s", mdp);
-        hachage_mdp(&mdp);
-        while(getClientSuivant(LCClient) != NULL && getIdClient(LCClient) != login) {
-            LCClient = getClientSuivant(LCClient); //WHAAAAAAAAAAAAAAT ???
-        }
-        if(getIdClient(LCClient) != login || strcmp(mdp, getMdp(LCClient))) return NULL;
+        mdp = hachage_mdp(mdp);
+        if(getIdClient(findClient(login, LCClient)) != login || strcmp(mdp, getMdp(findClient(login, LCClient)))) return NULL;
     } else {
-        printf("----NOUVEAU CLIENT----");
-        printf("login : ");
-        scanf("%d", &login);
+        printf("----NOUVEAU CLIENT----\n");
         printf("nom : ");
         scanf("%s", nom);
         printf("prenom : ");
@@ -200,7 +188,7 @@ Client login(Client LCClient)
         scanf("%d", &numero_tel);
         printf("mot de passe : ");
         scanf("%s", mdp);
-        hachage_mdp(&mdp);
+        hachage_mdp(mdp);
         cr_client(LCClient, nom, prenom, numero_tel, mdp);
     }
     return LCClient;
@@ -208,22 +196,22 @@ Client login(Client LCClient)
 
 //Prends en paramètre le mdp en clair et le crypte
 
-void hachage_mdp(char *mdp)
+char *hachage_mdp(char *mdp)
 {
     FILE *f;    
-    char commande[40];
+    char commande[32];
     sprintf(commande, "echo %s | md5sum", mdp);
     f   = popen (commande, "r") ;
 	char hache[32];
 	fgets(hache, 32, f);
     pclose(f);
-    *mdp = hache;
+    mdp = hache;
+    return mdp;
 }
 
 void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    system("clear");
     printf("----MENU ADMINISTRATEUR----\n\n");
     printf("1/ Gestion des comptes\n");
     printf("2/ Gestion des clients\n");
@@ -252,7 +240,6 @@ void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    system("clear");
     printf("----MENU CLIENT----\n");
     printf("Que souhaitez vous faire %s %s ?", getNom(client), getPrenom(client));
     printf("1/ Gestion des comptes\n");
@@ -277,7 +264,6 @@ void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_
 
 void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
-    system("clear");
     int choix;
     printf("client_actif : %s %s", getNom(client), getPrenom(client));
     printf("----Gestion des Comptes----\n");
@@ -336,7 +322,6 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
 
 void menu_client_administration(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
-    system("clear");
     int choix;
     printf("client_actif : %s %s", getNom(client), getPrenom(client));
     printf("----Administration----\n");
@@ -391,10 +376,11 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
         }
         case 3 :
         {
-            char newmdp[100];
+            char *newmdp;
+            newmdp = malloc(100*sizeof(char));
             printf("nouveau mot de passe : ");
             scanf("%s", newmdp);
-            hachage_mdp(newmdp);
+            newmdp = hachage_mdp(newmdp);
             setMdp(client, newmdp);
             creer_fichier_json_client(client);
             break;
@@ -410,7 +396,6 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
 void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    system("clear");
     printf("admin\n");
     printf("----Gestion des comptes----\n");
     printf("1/ créer, modifier, supprimer compte\n");
@@ -435,7 +420,6 @@ void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_V
 void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    system("clear");
     printf("admin");
     printf("----Gestion des clients----\n");
     printf("1/ ajouter client\n");
@@ -455,10 +439,11 @@ void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_V
             int num;
             printf("Num : ");
             scanf("%d", &num);
-            char mdp[100];
+            char *mdp;
+            mdp = malloc(100*sizeof(char));
             printf("nouveau mot de passe : ");
             scanf("%s", mdp);
-            hachage_mdp(mdp);
+            mdp = hachage_mdp(mdp);
             cr_client(LC_Client, nom, prenom, num, mdp);
             break;
         }
@@ -493,7 +478,6 @@ void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_V
 void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    system("clear");
     printf("admin");
     printf("----Administration----\n");
     printf("1/ changer mot de passe\n");
@@ -502,10 +486,11 @@ void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_V
     switch(choix) {
         case 1 :
         {
-            char newmdp[100];
+            char *newmdp;
+            newmdp = malloc(100*sizeof(char));
             printf("nouveau mot de passe : ");
             scanf("%s", newmdp);
-            hachage_mdp(newmdp);
+            newmdp = hachage_mdp(newmdp);
             setMdp(findClient(0, LC_Client), newmdp);
             creer_fichier_json_client(findClient(0, LC_Client));
             break;
@@ -522,7 +507,6 @@ void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_V
 void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    system("clear");
     printf("admin\n");
     printf("----Gestion des comptes----\n");
     printf("1/ créer\n");
