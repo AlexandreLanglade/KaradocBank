@@ -12,6 +12,7 @@
 //--------------METHODS--------------
 
 int getIndexCompte();
+void incrementerIndexCompte(int index);
 void cr_compte(Compte LCcompte, int id_client1, int id_client2, char type);
 void toprintcompte(Compte compte);
 void afficherComptes(Compte LCcompte);

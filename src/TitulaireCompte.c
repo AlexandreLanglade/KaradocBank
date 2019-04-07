@@ -15,12 +15,26 @@ struct TitulaireCompte_s
 int
 getIndexClient(){
     FILE *file;
-	file = fopen("../data/Clients/index.txt", "r");
-	char temp[10];
-	fgets(temp, 10, file);
-	int index = atoi(temp);
+	file = fopen("data/Clients/index.txt", "r");
+	int index;
+    if(file != NULL){
+        fscanf(file, "%d\n", &index);
+    }
+    else{printf("ERROR READING FILE INDEX.TXT\n");}
+    printf("%d", index);
+    fclose(file);
 	return index;
 }
+
+void incrementerIndexClient(int index)
+{
+    FILE *file;
+    file = fopen("data/Client/index.txt", "w");
+    index++;
+    if(file != NULL) fprintf(file, "%d", index);
+    fclose(file);
+}
+
 
 void
 cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
@@ -28,6 +42,7 @@ cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char m
     Client res;
     res = malloc(sizeof(Client));
     res->id_client = getIndexClient();
+    printf("YES !  \n");
     for(i = 0; i < 15; i++) {
         res->nom[i] = nom[i];
     }

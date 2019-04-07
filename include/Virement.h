@@ -11,7 +11,7 @@
 
 //--------------METHODS--------------
 
-int getIndex();
+int getIndexVirement();
 
 void cr_virement(Virement LCvirement, int id_comptefrom, int id_compteto, double montant);
 void LCinitVirement(int index, Virement * LCVirement);

@@ -14,11 +14,23 @@ struct Compte_s
 int
 getIndexCompte(){
     FILE *file;
-	file = fopen("../data/Comptes/index.txt", "r");
-	char temp[10];
-	fgets(temp, 10, file);
-	int index = atoi(temp);
+	file = fopen("data/Comptes/index.txt", "r");
+	int index;
+    if(file != NULL){
+        fscanf(file, "%d\n", &index);
+    }
+    else{printf("ERROR READING FILE INDEX.TXT\n");}
+    fclose(file);
 	return index;
+}
+
+void incrementerIndexCompte(int index)
+{
+    FILE *file;
+    file = fopen("data/Comptes/index.txt", "w");
+    index++;
+    if(file != NULL) fprintf(file, "%d", index);
+    fclose(file);
 }
 
 void
@@ -26,6 +38,7 @@ cr_compte(Compte LCcompte, int id_client1, int id_client2, char type) {
     Compte res;
     res = malloc(sizeof(Compte));
     res->id_compte = getIndexCompte();
+    incrementerIndexCompte(getIndexCompte());
     res->type = type; // a : livret a | c : courant | p : pel
     res->id_client1 = id_client1;
     res->id_client2 = id_client2;
@@ -147,7 +160,7 @@ void
 supprimerCompte(Compte LCcompte, Compte compte) {
     //LE COMPTE DOIT EXISTER !!!
     char nom_fichier[30] = "";
-    sprintf(nom_fichier,"../data/Comptes/%d.json", getIdCompte(compte));
+    sprintf(nom_fichier,"data/Comptes/%d.json", getIdCompte(compte));
     remove(nom_fichier);
     Compte etude = LCcompte;
     if (etude->compte_suivant == NULL) {
