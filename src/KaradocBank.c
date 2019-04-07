@@ -5,10 +5,8 @@ int main(int argv, char *argc)
     Client LC_Client;
     Compte LC_Compte;
     Virement LC_Virement;
-    LC_Virement = malloc(sizeof(Virement));
-    initialisation(LC_Compte, LC_Client, LC_Virement);
+    initialisation(&LC_Compte, &LC_Client, &LC_Virement);
     Client client_actif = NULL;
-    printf("%d", getIdClient(LC_Client));
     while(client_actif == NULL) {
         client_actif = login(LC_Client);
     }

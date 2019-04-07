@@ -32,11 +32,11 @@ void afficherVirements(Compte compte, Virement LCvir);
     /*
     Affiche la liste des virements du compte
     */
-void LCinitCompte(int index, Compte LCCompte);
+void LCinitCompte(int index, Compte * LCCompte);
     /*
     Retourne la liste chainée des comptes
     */
-void addLCCompte(Compte LCCompte, Compte compte);
+void addLCCompte(Compte * LCCompte, Compte compte);
     /*
     Ajoute un compte a une liste chainée de comptes
     */

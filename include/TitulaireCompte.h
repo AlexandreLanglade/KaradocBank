@@ -13,11 +13,11 @@
 
 int getIndexClient();
 void cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char mdp[32]);
-void LCinitClient(int index, Client LCclient);
+void LCinitClient(int index, Client * LCclient);
     /*
     Retourne la liste chainée des clients
     */
-void addLCClient(Client LCClient, Client client);
+void addLCClient(Client * LCClient, Client client);
     /*
     Ajoute un client a une liste chainée de client
     */

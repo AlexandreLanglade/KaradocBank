@@ -40,11 +40,11 @@ cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char m
     res->numero_tel = numero_tel;
     res->client_suivant = NULL;
     creer_fichier_json_client(res);
-    addLCClient(LCclient, res);
+    addLCClient(&LCclient, res);
 }
 
 void
-LCinitClient(int index, Client LCclient){
+LCinitClient(int index, Client * LCclient){
     Client res;
     res = malloc(sizeof(Client));
     lecture_fichier_json_client(index, res);
@@ -52,12 +52,12 @@ LCinitClient(int index, Client LCclient){
 }
 
 void
-addLCClient(Client LCClient, Client client){
-    if (LCClient == NULL) {
-        LCClient = malloc(sizeof(Client));
-        LCClient = client;
+addLCClient(Client * LCClient, Client client){
+    if (*LCClient == NULL) {
+        *LCClient = malloc(sizeof(Client));
+        *LCClient = client;
     } else {
-        Client etude = LCClient;
+        Client etude = *LCClient;
         while(etude->client_suivant != NULL){
             etude = etude->client_suivant;
         }

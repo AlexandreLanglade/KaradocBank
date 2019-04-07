@@ -1,6 +1,6 @@
 #include "../include/KaradocUtil.h"
 
-void initialisation(Compte LCCompte, Client LCClient, Virement LCVirement)
+void initialisation(Compte * LCCompte, Client * LCClient, Virement * LCVirement)
 {
     FILE *f;
 	int i, i_compt, ind;

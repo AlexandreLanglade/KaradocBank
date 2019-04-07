@@ -33,11 +33,11 @@ cr_compte(Compte LCcompte, int id_client1, int id_client2, char type) {
     res->locker = 1;
     res->compte_suivant = NULL;
     creer_fichier_json_compte(res);
-    addLCCompte(LCcompte, res);
+    addLCCompte(&LCcompte, res);
 }
 
 void
-LCinitCompte(int index, Compte LCcompte) {
+LCinitCompte(int index, Compte * LCcompte) {
     Compte res;
     res = malloc(sizeof(Compte));
     lecture_fichier_json_compte(index, res);
@@ -183,12 +183,12 @@ afficherVirements(Compte compte, Virement LCvir) {
 }
 
 void
-addLCCompte(Compte LCCompte, Compte compte) {
-    if (LCCompte == NULL) {
-        LCCompte = malloc(sizeof(Compte));
-        LCCompte = compte;
+addLCCompte(Compte * LCCompte, Compte compte) {
+    if (*LCCompte == NULL) {
+        *LCCompte = malloc(sizeof(Compte));
+        *LCCompte = compte;
     } else {
-        Compte etude = LCCompte;
+        Compte etude = *LCCompte;
         while(etude->compte_suivant != NULL){
             etude = etude->compte_suivant;
         }

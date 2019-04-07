@@ -13,7 +13,7 @@
 
 //--------------METHODS--------------
 
-void initialisation(Compte LC_Compte, Client LC_Client, Virement LC_Virement);
+void initialisation(Compte * LC_Compte, Client * LC_Client, Virement * LC_Virement);
     /*
     LCinitcompte + LCinitClient+ LCinitVirement
     Les 3 pointeurs en arguments deviennent les listes chainés

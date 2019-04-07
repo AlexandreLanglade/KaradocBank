@@ -31,7 +31,7 @@ Virement cr_virement(int id_compteFrom, int id_compteTo, double montant)
     return res;
 }
 
-void LCinitVirement(int index, Virement LCVirement)
+void LCinitVirement(int index, Virement * LCVirement)
 {
     Virement res;
     res = malloc(sizeof(Virement));
@@ -39,12 +39,13 @@ void LCinitVirement(int index, Virement LCVirement)
     addLCVirement(LCVirement, res);
 }
 
-void addLCVirement(Virement LCVirement, Virement vir)
+void addLCVirement(Virement * LCVirement, Virement vir)
 {
-    if (LCVirement == NULL) {
-        LCVirement = vir;
+    if (*LCVirement == NULL) {
+        *LCVirement = malloc(sizeof(Virement));
+        *LCVirement = vir;
     } else {
-        Virement etude = LCVirement;
+        Virement etude = *LCVirement;
         while(etude->virement_suivant != NULL){
             etude = etude->virement_suivant;
         }
