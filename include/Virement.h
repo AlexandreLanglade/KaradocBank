@@ -13,7 +13,7 @@
 
 int getIndex();
 
-Virement cr_virement(int id_comptefrom, int id_compteto, double montant);
+void cr_virement(Virement LCvirement, int id_comptefrom, int id_compteto, double montant);
 void LCinitVirement(int index, Virement * LCVirement);
     /*
     Retourne la file chainée des virements

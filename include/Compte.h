@@ -44,6 +44,7 @@ void addLCCompte(Compte * LCCompte, Compte compte);
 Compte findCompte(int id, Compte LCCompte);
 
 //#SET
+void setIdCompte(Compte compte, int id);
 void setMontant(Compte compte, double montant);
 void setClient1(int id_client1, Compte compte);
 void setClient2(int id_client2, Compte compte);

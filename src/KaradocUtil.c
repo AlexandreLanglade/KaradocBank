@@ -43,6 +43,17 @@ void initialisation(Compte * LCCompte, Client * LCClient, Virement * LCVirement)
     }
 }
 
+char *getDate_today()
+{
+    time_t actTime;
+    struct tm *timeComp;
+    time(&actTime);
+    timeComp = localtime(&actTime);
+    char *date = "";
+    date = malloc(sizeof(9));
+    sprintf(date, "%02d%02d%d", timeComp->tm_mday, timeComp->tm_mon+1, timeComp->tm_year+1900);
+}
+
 void lecture_fichier_json_client(int id, Client client) //CHECK VOID
 {
     FILE *f;
@@ -69,7 +80,7 @@ void lecture_fichier_json_client(int id, Client client) //CHECK VOID
             setMdp(client, commande);
             break;
             default :
-            printf("Client : Error reading %d.json\n", id);
+            printf("Client : Error reading client %d.json\n", id);
         }
     }
 }
@@ -85,6 +96,8 @@ void lecture_fichier_json_compte(int id, Compte compte) //CHECK
         f = popen (commande, "r") ;
         fgets(commande, 100, f);
         switch(i) {
+            case 7 :
+            setIdCompte(compte, id);
             case 6 :
             setType(compte, commande[0]);
             break;
@@ -101,7 +114,8 @@ void lecture_fichier_json_compte(int id, Compte compte) //CHECK
             setLock(compte, commande[0]);
             break;
             default :
-            printf("Error reading %d.json\n", id);
+            printf("i = %d commande : %s\n", i, commande);
+            printf("Error reading compte %d.json\n", id);
         }
     }
 }

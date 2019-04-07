@@ -208,6 +208,11 @@ findCompte(int id, Compte LCCompte) {
 }
 
 void
+setIdCompte(Compte compte, int id) {
+    compte->id_compte = id;
+}
+
+void
 setMontant(Compte compte, double montant) {
     compte->montant = montant;
 }

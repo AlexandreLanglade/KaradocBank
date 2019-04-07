@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "type.h"
 #include "Compte.h"
 #include "TitulaireCompte.h"
@@ -18,6 +19,8 @@ void initialisation(Compte * LC_Compte, Client * LC_Client, Virement * LC_Vireme
     LCinitcompte + LCinitClient+ LCinitVirement
     Les 3 pointeurs en arguments deviennent les listes chainés
     */
+
+char *getDate_today();
 
 void lecture_fichier_json_client(int id, Client client);
     /*
