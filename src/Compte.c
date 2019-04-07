@@ -41,7 +41,6 @@ LCinitCompte(int index, Compte * LCcompte) {
     Compte res;
     res = malloc(sizeof(Compte));
     lecture_fichier_json_compte(index, res);
-    toprintcompte(res); //test
     addLCCompte(LCcompte, res);
 }
 
@@ -178,7 +177,9 @@ afficherVirements(Compte compte, Virement LCvir) {
     Virement etude = LCvir;
     while(etude != NULL){
         if (getIdCompteFrom(etude) == getIdCompte(compte) || getIdCompteTo(etude) == getIdCompte(compte)){
-            //TODO afficher avec diff si from ou to
+            double montant = getMontantVir(etude);
+            if(getIdCompteFrom(etude) == getIdCompte(compte)) montant = montant*(-1);
+            printf("From : %d, To : %d, Montant : %lf", getIdCompteFrom(etude), getIdCompteTo(etude), montant);
         }
     }    
 }

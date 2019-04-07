@@ -1,7 +1,7 @@
 {
-    "id_client": "1",
-    "nom": "Chevalier",
-    "prenom": "Karadoc",
-    "numero_tel" : "0687653687",
-    "mdp" : "manger"
+	"id_client" : "1",
+	"nom" : "Chevalier",
+	"prenom" : "Karadoc",
+	"numero_tel" : "687653687",
+	"mdp" : "49beb52431269886c7dff66a7eba44b"
 }
