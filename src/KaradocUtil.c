@@ -170,10 +170,11 @@ Client login(Client LCClient)
     printf("mot de passe : ");
     scanf("%s", mdp);
     mdp = hachage_mdp(mdp);
-/*    if(strcmp(mdp, getMdp(findClient(login, LCClient))) != 0) {
+    if(strcmp(mdp, getMdp(findClient(login, LCClient))) == 0) {
+        return findClient(login, LCClient);
+    }else{
         return NULL;
-    }   */
-    return findClient(login, LCClient);
+    }
 }
 
 //Prends en paramètre le mdp en clair et le crypte
@@ -184,7 +185,8 @@ char *hachage_mdp(char *mdp)
     char commande[32];
     sprintf(commande, "echo %s | md5sum", mdp);
     f   = popen (commande, "r") ;
-	char hache[32];
+    char *hache;
+    hache = malloc(32);
 	fgets(hache, 32, f);
     pclose(f);
     mdp = hache;
