@@ -132,7 +132,25 @@ void lecture_fichier_json_virement(int id, Virement virement) //CHECK
         sprintf(commande, "cat data/Virements/%d.json | cut -f4 -d '\"' | tail -n%d", id, i);
         f = popen (commande, "r") ;
         fgets(commande, 100, f);
-        printf("%s", commande);
+        switch(i) {
+            case 5 :
+            setSuivVNull(virement);
+            setIdCompteFrom(virement, atoi(commande));
+            break;
+            case 4 :
+            setIdCompteTo(virement, atoi(commande));
+            break;
+            case 3 :
+            setDate(virement, commande);
+            break;
+            case 2 :
+            setVMontant(virement, atof(commande));
+            break;
+            default :
+            printf("i : %d\n", i);
+            printf("Error reading virement %d.json\n", id);
+            break;
+        }
     }
 }
 

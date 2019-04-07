@@ -82,3 +82,23 @@ Virement
 getNextVir(Virement vir) {
     return vir->virement_suivant;
 }
+
+void setIdCompteFrom(Virement vir, int id)
+{
+    vir->id_compteFrom = id;
+}
+
+void setIdCompteTo(Virement vir, int id)
+{
+    vir->id_compteTo = id;
+}
+
+void setDate(Virement vir, char *date)
+{
+    vir->date = date;
+}
+
+void setVMontant(Virement vir, double montant)
+{
+    vir->montant = montant;
+}

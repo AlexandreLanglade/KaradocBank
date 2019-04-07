@@ -25,6 +25,10 @@ void addLCVirement(Virement * LCVirement, Virement vir);
 
 //#SET
 void setSuivVNull(Virement virement);
+void setIdCompteFrom(Virement vir, int id);
+void setIdCompteTo(Virement vir, int id);
+void setDate(Virement vir, char* date);
+void setVMontant(Virement vir, double montant);
 
 //#GET
 int getIdCompteFrom(Virement vir);
