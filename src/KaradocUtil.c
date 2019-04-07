@@ -322,9 +322,9 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
     scanf("%d", &choix);
     int compteActif;
     printf("Id du compte pour l'action : ");
-    while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
+    /*while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
         scanf("%d", &compteActif);
-    }    
+    }*/  //PROBLEME ICI TODOOOOOOOO mais demain parce que la g sommeil
     switch(choix) {
         case 1 :
         {
@@ -359,6 +359,7 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
         }
         case 4 :
             menu_client(client, LC_Client, LC_Compte, LC_Virement);
+            break;
         default :
             printf("Error");
             break;
