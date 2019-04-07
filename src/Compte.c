@@ -41,6 +41,7 @@ LCinitCompte(int index, Compte * LCcompte) {
     Compte res;
     res = malloc(sizeof(Compte));
     lecture_fichier_json_compte(index, res);
+    toprintcompte(res);
     addLCCompte(LCcompte, res);
 }
 
@@ -69,8 +70,9 @@ toprintcompte(Compte compte) {
 }
 
 void
-afficherComptes(Compte LCcompte) {
-    Compte etude = LCcompte;
+afficherComptes(Compte LCcompte) {  
+    Compte etude = malloc(sizeof(Compte));
+    etude = LCcompte;
     while(etude != NULL){
         if (etude->type == 'c') {
             toprintcompte(etude);
@@ -90,7 +92,7 @@ afficherComptes(Compte LCcompte) {
             toprintcompte(etude);
         }
         etude = etude->compte_suivant;        
-    } 
+    }
 }
 
 void

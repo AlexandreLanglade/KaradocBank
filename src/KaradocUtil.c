@@ -161,38 +161,19 @@ void creer_fichier_json_virement(int id, int id_compteFrom, int id_compteTo, cha
 
 Client login(Client LCClient)
 {
-    int answer;
-    printf("1/ Login\n2/ Nouveau Client ?\n3/ Quitter\n");
-    scanf("%d", &answer);
-    if(answer == 3) exit(EXIT_SUCCESS);
     int login;
-    char nom[15];
-    char prenom[15];
-    int numero_tel;
     char *mdp;
     mdp = malloc(40*sizeof(char));
-    if(answer == 1){
-        printf("----LOGIN----\n");
-        printf("login : ");
-        scanf("%d", &login);
-        printf("mot de passe : ");
-        scanf("%s", mdp);
-        mdp = hachage_mdp(mdp);
-        if(getIdClient(findClient(login, LCClient)) != login || strcmp(mdp, getMdp(findClient(login, LCClient)))) return NULL;
-    } else {
-        printf("----NOUVEAU CLIENT----\n");
-        printf("nom : ");
-        scanf("%s", nom);
-        printf("prenom : ");
-        scanf("%s", prenom);
-        printf("numero_tel : ");
-        scanf("%d", &numero_tel);
-        printf("mot de passe : ");
-        scanf("%s", mdp);
-        hachage_mdp(mdp);
-        cr_client(LCClient, nom, prenom, numero_tel, mdp);
-    }
-    return LCClient;
+    printf("----LOGIN----\n");
+    printf("login : ");
+    scanf("%d", &login);
+    printf("mot de passe : ");
+    scanf("%s", mdp);
+    mdp = hachage_mdp(mdp);
+/*    if(strcmp(mdp, getMdp(findClient(login, LCClient))) != 0) {
+        return NULL;
+    }   */
+    return findClient(login, LCClient);
 }
 
 //Prends en paramètre le mdp en clair et le crypte
