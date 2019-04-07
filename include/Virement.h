@@ -23,6 +23,9 @@ void addLCVirement(Virement * LCVirement, Virement vir);
     Ajoute un virement a une liste chainée de virements
     */
 
+//#SET
+void setSuivVNull(Virement virement);
+
 //#GET
 int getIdCompteFrom(Virement vir);
 int getIdCompteTo(Virement vir);

@@ -30,6 +30,7 @@ void setNom(Client client, char nom[15]);
 void setPrenom(Client client, char prenom[15]);
 void setNum(Client client, int num);
 void setMdp(Client client, char mdp[32]);
+void setSuivClNull(Client client);
 
 //#GET
 int getIdClient(Client client);

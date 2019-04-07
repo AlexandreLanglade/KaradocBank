@@ -17,7 +17,7 @@ void initialisation(Compte * LCCompte, Client * LCClient, Virement * LCVirement)
     	ind = atoi(commande);
     	LCinitClient(ind, LCClient);
     }
-
+    
 	sprintf(compt, "ls data/Comptes | wc -l");
     f = popen (compt, "r") ;
     fgets(compt, 100, f);
@@ -66,6 +66,7 @@ void lecture_fichier_json_client(int id, Client client) //CHECK VOID
         switch(i) {
             case 6 :
             setId(client, atoi(commande));
+            setSuivClNull(client);
             break;
             case 5 :
             setNom(client, commande);
@@ -98,6 +99,7 @@ void lecture_fichier_json_compte(int id, Compte compte) //CHECK
         switch(i) {
             case 7 :
             setIdCompte(compte, id);
+            setSuivCNull(compte);
             case 6 :
             setType(compte, commande[0]);
             break;
@@ -287,9 +289,16 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
     }    
     switch(choix) {
         case 1 :
-            //TODO choix des dates
-            //exporterCompte(LC_Virement, findCompte(compteActif,LC_Compte),) /*TODO date*/);
+        {
+            char from[8];
+            char to[8];
+            printf("From (jjmmaaaa) : ");
+            scanf("%s", from);
+            printf("To (jjmmaaaa) : ");
+            scanf("%s", to);
+            exporterCompte(LC_Virement, findCompte(compteActif,LC_Compte), from, to);
             break;
+        }
         case 2 :
             afficherVirements(findCompte(compteActif, LC_Compte), LC_Virement);
             break;
@@ -307,7 +316,7 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
             setMontant(findCompte(to,LC_Compte), getMontant(findCompte(to, LC_Compte))+montant);
             creer_fichier_json_compte(findCompte(compteActif, LC_Compte));
             creer_fichier_json_compte(findCompte(to, LC_Compte));
-            cr_virement(compteActif, to, montant);
+            cr_virement(LC_Virement, compteActif, to, montant);
             break;
         }
         case 4 :

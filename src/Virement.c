@@ -53,6 +53,11 @@ void addLCVirement(Virement * LCVirement, Virement vir)
     }
 }
 
+void
+setSuivVNull(Virement virement) {
+    virement->virement_suivant = NULL;
+}
+
 int getIdCompteFrom(Virement virement)
 {
     return virement->id_compteFrom;

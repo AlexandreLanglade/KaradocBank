@@ -50,6 +50,7 @@ void setClient1(int id_client1, Compte compte);
 void setClient2(int id_client2, Compte compte);
 void setLock(Compte compte, char locker);
 void setType(Compte compte, char type);
+void setSuivCNull(Compte compte);
 
 //#GET
 char getLock(Compte compte);

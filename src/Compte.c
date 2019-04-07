@@ -41,7 +41,7 @@ LCinitCompte(int index, Compte * LCcompte) {
     Compte res;
     res = malloc(sizeof(Compte));
     lecture_fichier_json_compte(index, res);
-    toprintcompte(res);
+    toprintcompte(res); //test
     addLCCompte(LCcompte, res);
 }
 
@@ -149,7 +149,6 @@ supprimerCompte(Compte LCcompte, Compte compte) {
     //LE COMPTE DOIT EXISTER !!!
     char nom_fichier[30] = "";
     sprintf(nom_fichier,"../data/Comptes/%d.json", getIdCompte(compte));
-    printf("%s", nom_fichier);
     remove(nom_fichier);
     Compte etude = LCcompte;
     if (etude->compte_suivant == NULL) {
@@ -190,7 +189,8 @@ addLCCompte(Compte * LCCompte, Compte compte) {
         *LCCompte = malloc(sizeof(Compte));
         *LCCompte = compte;
     } else {
-        Compte etude = *LCCompte;
+        Compte etude = malloc(sizeof(Compte));
+        etude = *LCCompte;
         while(etude->compte_suivant != NULL){
             etude = etude->compte_suivant;
         }
@@ -235,6 +235,11 @@ setLock(Compte compte, char locker) {
 void
 setType(Compte compte, char type) {
     compte->type = type;
+}
+
+void
+setSuivCNull(Compte compte) {
+    compte->compte_suivant = NULL;
 }
 
 char

@@ -114,6 +114,11 @@ setMdp(Client client, char mdp[32]){
     } 
 }
 
+void
+setSuivClNull(Client client) {
+    client->client_suivant = NULL;
+}
+
 int
 getIdClient(Client client){
     return client->id_client;
