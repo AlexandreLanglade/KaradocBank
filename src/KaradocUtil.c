@@ -162,7 +162,22 @@ void creer_fichier_json_client(Client client)
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
     {
-        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), getNom(client), getPrenom(client), getNum(client), getMdp(client));
+        char *nom, *prenom;
+        nom = malloc(50);
+        prenom = malloc(50);
+        int i = 0;
+        while(getNom(client)[i] != '\n'){
+            nom[i] = getNom(client)[i];
+            i++;
+        }
+        nom = realloc(nom, i);
+        i = 0;
+        while(getPrenom(client)[i] != '\n'){
+            prenom[i] = getPrenom(client)[i];
+            i++;
+        }
+        prenom = realloc(prenom, i);
+        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), getMdp(client));
         fclose(fichier);
     }
 }
@@ -259,7 +274,7 @@ void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_
 {
     int choix;
     printf("----MENU CLIENT----\n");
-    printf("Que souhaitez vous faire %s %s ?", getNom(client), getPrenom(client));
+    printf("Que souhaitez vous faire %s %s ?\n", getNom(client), getPrenom(client));
     printf("1/ Gestion des comptes\n");
     printf("2/ Administration\n");
     printf("3/ Quitter\n");
