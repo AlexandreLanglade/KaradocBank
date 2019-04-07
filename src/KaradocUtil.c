@@ -156,8 +156,13 @@ void lecture_fichier_json_virement(int id, Virement virement) //CHECK
 
 void creer_fichier_json_client(Client client)
 {
-    FILE *fichier;
+    FILE *fichier = NULL;
     char nom_fichier[100] = "";
+    char mdp[32];
+    int i;
+    for(i = 0; i < 32; i++) {
+        mdp[i] = getMdp(client)[i];
+    }
     sprintf(nom_fichier, "data/Clients/%d.json", getIdClient(client));
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
@@ -166,18 +171,18 @@ void creer_fichier_json_client(Client client)
         nom = malloc(50);
         prenom = malloc(50);
         int i = 0;
-        while(getNom(client)[i] != '\n'){
-            nom[i] = getNom(client)[i];
+        while(getNom(client)[i] != '\0'){
+            if(getNom(client)[i] == '\n')nom[i] = '\0';
+            else nom[i] = getNom(client)[i];
             i++;
         }
-        nom = realloc(nom, i);
         i = 0;
-        while(getPrenom(client)[i] != '\n'){
-            prenom[i] = getPrenom(client)[i];
+        while(getPrenom(client)[i] != '\0'){
+            if(getPrenom(client)[i] == '\n')prenom[i] = '\0';
+            else prenom[i] = getPrenom(client)[i];
             i++;
         }
-        prenom = realloc(prenom, i);
-        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), getMdp(client));
+        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), mdp);
         fclose(fichier);
     }
 }
