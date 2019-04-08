@@ -15,12 +15,26 @@ struct TitulaireCompte_s
 int
 getIndexClient(){
     FILE *file;
-	file = fopen("../data/Clients/index.txt", "r");
-	char temp[10];
-	fgets(temp, 10, file);
-	int index = atoi(temp);
+	file = fopen("data/Clients/index.txt", "r");
+	int index;
+    if(file != NULL){
+        fscanf(file, "%d\n", &index);
+    }
+    else{printf("ERROR READING FILE INDEX.TXT\n");}
+    fclose(file);
 	return index;
 }
+
+void incrementerIndexClient(int index)
+{
+    FILE *file;
+    file = fopen("data/Clients/index.txt", "w");
+    index++;
+    if(file != NULL) fprintf(file, "%d", index);
+    else{printf("ERROR READING INDEX.TXT\n");}
+    fclose(file);
+}
+
 
 void
 cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
@@ -28,18 +42,20 @@ cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char m
     Client res;
     res = malloc(sizeof(Client));
     res->id_client = getIndexClient();
+    incrementerIndexClient(getIndexClient());
     for(i = 0; i < 15; i++) {
         res->nom[i] = nom[i];
     }
     for(i = 0; i < 15; i++) {
         res->prenom[i] = prenom[i];
     }
-    for(i = 0; i < 15; i++) {
+    for(i = 0; i < 32; i++) {
         res->mdp[i] = mdp[i];
-    }    
+    }
     res->numero_tel = numero_tel;
     res->client_suivant = NULL;
     creer_fichier_json_client(res);
+    printf("pas de prob avec le json\n");
     addLCClient(&LCclient, res);
 }
 

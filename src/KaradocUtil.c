@@ -156,8 +156,13 @@ void lecture_fichier_json_virement(int id, Virement virement) //CHECK
 
 void creer_fichier_json_client(Client client)
 {
-    FILE *fichier;
+    FILE *fichier = NULL;
     char nom_fichier[100] = "";
+    char mdp[32];
+    int i;
+    for(i = 0; i < 32; i++) {
+        mdp[i] = getMdp(client)[i];
+    }
     sprintf(nom_fichier, "data/Clients/%d.json", getIdClient(client));
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
@@ -166,18 +171,18 @@ void creer_fichier_json_client(Client client)
         nom = malloc(50);
         prenom = malloc(50);
         int i = 0;
-        while(getNom(client)[i] != '\n'){
-            nom[i] = getNom(client)[i];
+        while(getNom(client)[i] != '\0'){
+            if(getNom(client)[i] == '\n')nom[i] = '\0';
+            else nom[i] = getNom(client)[i];
             i++;
         }
-        nom = realloc(nom, i);
         i = 0;
-        while(getPrenom(client)[i] != '\n'){
-            prenom[i] = getPrenom(client)[i];
+        while(getPrenom(client)[i] != '\0'){
+            if(getPrenom(client)[i] == '\n')prenom[i] = '\0';
+            else prenom[i] = getPrenom(client)[i];
             i++;
         }
-        prenom = realloc(prenom, i);
-        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), getMdp(client));
+        fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), mdp);
         fclose(fichier);
     }
 }
@@ -190,7 +195,7 @@ void creer_fichier_json_compte(Compte compte)
     fichier = fopen(nom_fichier, "w");
     if (fichier != NULL)
     {
-        fprintf(fichier, "{\n\t\"id_compte\" : \"%d\",\n\t\"type\" : \"%c\",\n\t\"id_client1\" : \"%d\",\n\t\"id_client2\" : \"%d\",\n\t\"montant\" : \"%lf\",\n\t\"locker\" : \"%c\"\n}", getIdCompte(compte), getType(compte), getIdClient1(compte), getIdClient2(compte), getMontant(compte), getLock(compte));
+        fprintf(fichier, "{\n\t\"id_compte\" : \"%d\",\n\t\"type\" : \"%c\",\n\t\"id_client1\" : \"%d\",\n\t\"id_client2\" : \"%d\",\n\t\"montant\" : \"%lf\",\n\t\"locker\" : \"%d\"\n}", getIdCompte(compte), getType(compte), getIdClient1(compte), getIdClient2(compte), getMontant(compte), getLock(compte));
         fclose(fichier);
     }
 }
@@ -317,9 +322,9 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
     scanf("%d", &choix);
     int compteActif;
     printf("Id du compte pour l'action : ");
-    while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
+    /*while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
         scanf("%d", &compteActif);
-    }    
+    }*/  //PROBLEME ICI TODOOOOOOOO mais demain parce que la g sommeil
     switch(choix) {
         case 1 :
         {
@@ -354,6 +359,7 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
         }
         case 4 :
             menu_client(client, LC_Client, LC_Compte, LC_Virement);
+            break;
         default :
             printf("Error");
             break;
@@ -579,11 +585,12 @@ void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
             if (ok == 1) {
                 int id1, id2;
                 char t;
-                printf("id client 1 :");
+                printf("id client 1 : ");
                 scanf("%d", &id1);
-                printf("id client 2 (-1 si non existant) :");
+                printf("id client 2 (-1 si non existant) : ");
                 scanf("%d", &id2);
-                printf("type (a, p, c) :");
+                getchar();
+                printf("type (a, p, c) : ");
                 scanf("%c", &t);
                 cr_compte(LC_Compte, id1, id2, t);
             }       
@@ -592,7 +599,7 @@ void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
         {
             int idc;
             double nm;
-            printf("id du compte à midifier : ");
+            printf("id du compte à modifier : ");
             scanf("%d", &idc);
             printf("nouveau montant : ");
             scanf("%lf", &nm);
@@ -630,6 +637,7 @@ void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
             break;
         case 4 :
             menu_admin_gestionComptes(LC_Client, LC_Compte, LC_Virement);
+            break;
         default :
             printf("Error");
             break;

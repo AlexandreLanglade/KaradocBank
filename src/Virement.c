@@ -10,14 +10,28 @@ struct Virement_s
 };
 
 int
-getIndex(){
+getIndexVirement(){
     FILE *file;
-	file = fopen("../data/Virements/index.txt", "r");
-	char temp[10];
-	fgets(temp, 10, file);
-	int index = atoi(temp);
-    return index;
+	file = fopen("data/Clients/index.txt", "r");
+	int index;
+    if(file != NULL){
+        fscanf(file, "%d\n", &index);
+    }
+    else{printf("ERROR READING FILE INDEX.TXT\n");}
+    printf("%d", index);
+    fclose(file);
+	return index;
 }
+
+void incrementerIndexVirement(int index)
+{
+    FILE *file;
+    file = fopen("data/Virement/index.txt", "w");
+    index++;
+    if(file != NULL) fprintf(file, "%d", index);
+    fclose(file);
+}
+
 
 void cr_virement(Virement LCvirement, int id_compteFrom, int id_compteTo, double montant)
 {
@@ -27,7 +41,8 @@ void cr_virement(Virement LCvirement, int id_compteFrom, int id_compteTo, double
     res->id_compteTo = id_compteTo;
     res->date = getDate_today();
     res->montant = montant;
-    creer_fichier_json_virement(getIndex(), res->id_compteFrom, res->id_compteTo, res->date, res->montant);
+    creer_fichier_json_virement(getIndexVirement(), res->id_compteFrom, res->id_compteTo, res->date, res->montant);
+    incrementerIndexVirement(getIndexVirement());
     addLCVirement(&LCvirement, res);
 }
 
