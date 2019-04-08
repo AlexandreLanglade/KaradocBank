@@ -6,6 +6,7 @@ int main(int argv, char *argc)
     Compte LC_Compte = NULL;
     Virement LC_Virement = NULL;
     initialisation(&LC_Compte, &LC_Client, &LC_Virement);
+    printf("%d\n", getLock(LC_Compte));
     Client client_actif = NULL;
     while(client_actif == NULL) {
         client_actif = login(LC_Client);

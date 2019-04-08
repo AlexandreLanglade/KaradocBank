@@ -303,7 +303,15 @@ void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_
 void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    printf("client_actif : %s %s", getNom(client), getPrenom(client));
+    char *nom;
+    nom = malloc(50);
+    int i = 0;
+    while(getNom(client)[i] != '\0'){
+        if(getNom(client)[i] == '\n')nom[i] = '\0';
+        else nom[i] = getNom(client)[i];
+        i++;
+    }
+    printf("client_actif : %s %s", nom, getPrenom(client));
     printf("----Gestion des Comptes----\n");
     Compte etude = LC_Compte;
     while(etude != NULL){
@@ -320,11 +328,11 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
     printf("3/ Faire un virement\n");
     printf("4/ Retour\n");
     scanf("%d", &choix);
-    int compteActif;
+    int compteActif = 1;
     printf("Id du compte pour l'action : ");
-    /*while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
+    while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
         scanf("%d", &compteActif);
-    }*/  //PROBLEME ICI TODOOOOOOOO mais demain parce que la g sommeil
+    }
     switch(choix) {
         case 1 :
         {
@@ -346,7 +354,7 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
             int to;
             printf("Montant du virement : ");
             while(montant <=0 || montant > getMontant(findCompte(compteActif, LC_Compte))){
-                scanf("%lf", & montant);
+                scanf("%lf", &montant);
             }
             printf("id du compte cible :");
             scanf("%d", &to);

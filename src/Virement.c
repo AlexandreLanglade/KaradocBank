@@ -41,6 +41,8 @@ void cr_virement(Virement LCvirement, int id_compteFrom, int id_compteTo, double
     res->id_compteTo = id_compteTo;
     res->date = getDate_today();
     res->montant = montant;
+    printf("%s\n", getDate_today());
+    printf("%d %d %d %s %lf\n", getIndexVirement(), res->id_compteFrom, res->id_compteTo, res->date, res->montant);
     creer_fichier_json_virement(getIndexVirement(), res->id_compteFrom, res->id_compteTo, res->date, res->montant);
     incrementerIndexVirement(getIndexVirement());
     addLCVirement(&LCvirement, res);

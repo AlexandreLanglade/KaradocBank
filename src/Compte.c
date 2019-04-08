@@ -214,8 +214,9 @@ addLCCompte(Compte * LCCompte, Compte compte) {
 
 Compte
 findCompte(int id, Compte LCCompte) {
-    Compte etude = LCCompte;
-    while(getIdCompte(etude) != id && etude != NULL){
+    Compte etude = malloc(sizeof(Compte));
+    etude = LCCompte;
+    while(etude != NULL && getIdCompte(etude) != id){
         etude = etude->compte_suivant;
     }
     return etude;
