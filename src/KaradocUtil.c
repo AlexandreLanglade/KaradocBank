@@ -52,6 +52,7 @@ char *getDate_today()
     char *date = "";
     date = malloc(sizeof(9));
     sprintf(date, "%02d%02d%d", timeComp->tm_mday, timeComp->tm_mon+1, timeComp->tm_year+1900);
+    return date;
 }
 
 void lecture_fichier_json_client(int id, Client client) //CHECK VOID
@@ -113,7 +114,7 @@ void lecture_fichier_json_compte(int id, Compte compte) //CHECK
             setMontant(compte, atof(commande));
             break;
             case 2 :
-            setLock(compte, commande[0]);
+            setLock(compte, commande[0]-48);
             break;
             default :
             printf("i = %d commande : %s\n", i, commande);
@@ -328,16 +329,22 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
     printf("3/ Faire un virement\n");
     printf("4/ Retour\n");
     scanf("%d", &choix);
-    int compteActif = 1;
+    if (choix == 4) {
+        menu_client(client, LC_Client, LC_Compte, LC_Virement);
+        return;
+    }
+    int compteActif;
     printf("Id du compte pour l'action : ");
+    scanf("%d", &compteActif);
     while(getIdClient1(findCompte(compteActif, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(compteActif, LC_Compte)) != getIdClient(client)){
         scanf("%d", &compteActif);
+        getchar();
     }
     switch(choix) {
         case 1 :
         {
-            char from[8];
-            char to[8];
+            char from[9];
+            char to[9];
             printf("From (jjmmaaaa) : ");
             scanf("%s", from);
             printf("To (jjmmaaaa) : ");
@@ -365,13 +372,11 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
             cr_virement(LC_Virement, compteActif, to, montant);
             break;
         }
-        case 4 :
-            menu_client(client, LC_Client, LC_Compte, LC_Virement);
-            break;
         default :
             printf("Error");
             break;
     }
+    menu_client_gestionComptes(client, LC_Client, LC_Compte, LC_Virement);
 }
 
 void menu_client_administration(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
@@ -445,6 +450,7 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
             printf("Error");
             break;
     }
+    menu_client_administration(client, LC_Client, LC_Compte, LC_Virement);
 }
 
 void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_Virement)

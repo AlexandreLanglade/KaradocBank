@@ -109,55 +109,53 @@ afficherComptes(Compte LCcompte) {
 
 void
 exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
-    //TODO
     int jfrom, mfrom, afrom, jto, mto, ato;
-    jfrom = from[0]*10 + from[1];
-    mfrom = from[2]*10 + from[3];
-    afrom = from[4]*1000 + from[5]*100 + from[6]*10 + from[7];
-    jto = to[0]*10 + to[1];
-    mto = to[2]*10 + to[3];
-    ato = to[4]*1000 + to[5]*100 + to[6]*10 + to[7];
+    jfrom = (from[0]-48)*10 + from[1]-48;
+    mfrom = (from[2]-48)*10 + from[3]-48;
+    afrom = (from[4]-48)*1000 + (from[5]-48)*100 + (from[6]-48)*10 + from[7]-48;
+    jto = (to[0]-48)*10 + to[1]-48;
+    mto = (to[2]-48)*10 + to[3]-48;
+    ato = (to[4]-48)*1000 + (to[5]-48)*100 + (to[6]-48)*10 + to[7]-48;
     FILE * fichierexport = NULL;
     char nom_fichier[50] = "";
-    sprintf(nom_fichier, "../data/export/%d_%s_%s.csv", getIdCompte(compte), from, to);
-    fichierexport = fopen(nom_fichier, "r"); /* todo theau : peux tu
-        faire en sorte que le nom du fichier créé (dans data/export/) soit de la forme:
-        "idcompte datefrom dateto.csv" stp et ouvert en écriture
-    */ //est ce que c'est grave si le nom est au format "idcompte_datefrom_dateto.csv" ?
-    fputs("From,To,Date,Value", fichierexport);
-    Virement etude = LCvir;
-    while(etude != NULL) {
-        if (getIdCompteFrom(etude) == getIdCompte(compte) || getIdCompteTo(etude) == getIdCompte(compte)) {
-            int jetude, metude, aetude;
-            jetude = getDate(etude)[0]*10 + getDate(etude)[1];
-            metude = getDate(etude)[2]*10 + getDate(etude)[3];
-            aetude = getDate(etude)[4]*1000 + getDate(etude)[5]*100 + getDate(etude)[6]*10 + getDate(etude)[7];
-            if (ato - aetude < 0 || aetude - afrom < 0) {
-                etude = getNextVir(etude);
-                break;
+    sprintf(nom_fichier, "data/export/%d_%s_%s.csv", getIdCompte(compte), from, to);
+    fichierexport = fopen(nom_fichier, "w");
+    if(fichierexport != NULL){
+        fputs("From,To,Date,Value\n", fichierexport);
+        Virement etude = LCvir;
+        while(etude != NULL) {
+            if (getIdCompteFrom(etude) == getIdCompte(compte) || getIdCompteTo(etude) == getIdCompte(compte)) {
+                int jetude, metude, aetude;
+                jetude = (getDate(etude)[0]-48)*10 + (getDate(etude)[1]-48);
+                metude = (getDate(etude)[2]-48)*10 + (getDate(etude)[3]-48);
+                aetude = (getDate(etude)[4]-48)*1000 + (getDate(etude)[5]-48)*100 + (getDate(etude)[6]-48)*10 + getDate(etude)[7]-48;
+                if (ato - aetude < 0 || aetude - afrom < 0) {
+                    etude = getNextVir(etude);
+                    break;
+                }
+                if ((ato - aetude == 0 && mto - metude < 0) || (aetude - afrom == 0 && metude - mfrom < 0)) {
+                    etude = getNextVir(etude);
+                    break;
+                }
+                if ((ato - aetude == 0 && mto - metude == 0 && jto - jetude < 0) || (aetude - afrom == 0 && metude - mfrom == 0 && jetude - jfrom < 0)) {
+                    etude = getNextVir(etude);
+                    break;
+                }
+                fprintf(fichierexport, "%d,%d,%d/%d/%d,%lf\n", 
+                    getIdCompteFrom(etude),
+                    getIdCompteTo(etude),
+                    jetude,metude,aetude,
+                    getMontantVir(etude)
+                );
             }
-            if ((ato - aetude == 0 && mto - metude < 0) || (aetude - afrom == 0 && metude - mfrom < 0)) {
-                etude = getNextVir(etude);
-                break;
-            }
-            if ((ato - aetude == 0 && mto - metude == 0 && jto - jetude < 0) || (aetude - afrom == 0 && metude - mfrom == 0 && jetude - jfrom < 0)) {
-                etude = getNextVir(etude);
-                break;
-            }
-            fprintf(fichierexport, "%d,%d,%d/%d/%d,%lf", 
-                getIdCompteFrom(etude),
-                getIdCompteTo(etude),
-                jetude,metude,aetude,
-                getMontantVir(etude)
-            );
+            etude = getNextVir(etude);    
         }
-        etude = getNextVir(etude);    
+        fclose(fichierexport);
+        }
     }
-    fclose(fichierexport);
-}
 
-void
-supprimerCompte(Compte LCcompte, Compte compte) {
+    void
+    supprimerCompte(Compte LCcompte, Compte compte) {
     //LE COMPTE DOIT EXISTER !!!
     char nom_fichier[30] = "";
     sprintf(nom_fichier,"data/Comptes/%d.json", getIdCompte(compte));
@@ -192,8 +190,9 @@ afficherVirements(Compte compte, Virement LCvir) {
         if (getIdCompteFrom(etude) == getIdCompte(compte) || getIdCompteTo(etude) == getIdCompte(compte)){
             double montant = getMontantVir(etude);
             if(getIdCompteFrom(etude) == getIdCompte(compte)) montant = montant*(-1);
-            printf("From : %d, To : %d, Montant : %lf", getIdCompteFrom(etude), getIdCompteTo(etude), montant);
+            printf("From : %d, To : %d, Montant : %lf\n", getIdCompteFrom(etude), getIdCompteTo(etude), montant);
         }
+        etude = getNextVir(etude);
     }    
 }
 
