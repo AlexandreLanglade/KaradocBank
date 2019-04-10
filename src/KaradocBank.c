@@ -1,6 +1,6 @@
 #include "../include/KaradocBank.h"
 
-int main(int argv, char *argc)
+int main(int argc, char const *argv[])
 {
     Client LC_Client = NULL;
     Compte LC_Compte = NULL;
