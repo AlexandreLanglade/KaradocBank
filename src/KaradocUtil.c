@@ -157,7 +157,7 @@ void lecture_fichier_json_virement(int id, Virement virement) //CHECK
 
 void creer_fichier_json_client(Client client)
 {
-    FILE *fichier = NULL;
+    FILE *fichier;
     char nom_fichier[100] = "";
     char mdp[32];
     int i;
@@ -184,7 +184,6 @@ void creer_fichier_json_client(Client client)
             i++;
         }
         fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), mdp);
-        fclose(fichier);
     }
 }
 
@@ -279,8 +278,23 @@ void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
+    char *nom, *prenom;
+    nom = malloc(50);
+    prenom = malloc(50);
+    int i = 0;
+    while(getNom(client)[i] != '\0'){
+        if(getNom(client)[i] == '\n')nom[i] = '\0';
+        else nom[i] = getNom(client)[i];
+        i++;
+    }
+    i = 0;
+    while(getPrenom(client)[i] != '\0'){
+        if(getPrenom(client)[i] == '\n')prenom[i] = '\0';
+        else prenom[i] = getPrenom(client)[i];
+        i++;
+    }
     printf("----MENU CLIENT----\n");
-    printf("Que souhaitez vous faire %s %s ?\n", getNom(client), getPrenom(client));
+    printf("Que souhaitez vous faire %s %s ?\n", nom, prenom);
     printf("1/ Gestion des comptes\n");
     printf("2/ Administration\n");
     printf("3/ Quitter\n");
@@ -323,7 +337,6 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
         }
         etude = getNextCompte(etude);
     }
-    free(etude);
     printf("1/ liste des opérations\n");
     printf("2/ consulter virements\n");
     printf("3/ Faire un virement\n");
@@ -382,7 +395,22 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
 void menu_client_administration(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    printf("client_actif : %s %s", getNom(client), getPrenom(client));
+    char *nom, *prenom;
+    nom = malloc(50);
+    prenom = malloc(50);
+    int i = 0;
+    while(getNom(client)[i] != '\0'){
+        if(getNom(client)[i] == '\n')nom[i] = '\0';
+        else nom[i] = getNom(client)[i];
+        i++;
+    }
+    i = 0;
+    while(getPrenom(client)[i] != '\0'){
+        if(getPrenom(client)[i] == '\n')prenom[i] = '\0';
+        else prenom[i] = getPrenom(client)[i];
+        i++;
+    }
+    printf("client_actif : %s %s\n", nom, prenom);
     printf("----Administration----\n");
     Compte etude = LC_Compte;
     while(etude != NULL){
@@ -393,7 +421,6 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
         }
         etude = getNextCompte(etude);
     }
-    free(etude);
     printf("1/ creation compte\n");
     printf("2/ suppression compte\n");
     printf("3/ changer mot de passe\n");
@@ -426,6 +453,7 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
         {
             int idcompteasuppr;
             printf("id du compte à supprimer : ");
+            scanf("%d", &idcompteasuppr);
             while(getIdClient1(findCompte(idcompteasuppr, LC_Compte)) != getIdClient(client) && getIdClient2(findCompte(idcompteasuppr, LC_Compte)) != getIdClient(client)){
                 scanf("%d", &idcompteasuppr);
             }
@@ -475,12 +503,13 @@ void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_V
             printf("Error");
             break;
     }
+    menu_admin_gestionComptes(LC_Client, LC_Compte, LC_Virement);
 }
 
 void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     int choix;
-    printf("admin");
+    printf("admin\n");
     printf("----Gestion des clients----\n");
     printf("1/ ajouter client\n");
     printf("2/ modifier coordonnées client\n");
@@ -533,6 +562,7 @@ void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_V
             printf("Error");
             break;
     }
+    menu_admin_gestionClients(LC_Client, LC_Compte, LC_Virement);
 }
 
 void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
@@ -562,6 +592,7 @@ void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_V
             printf("Error");
             break;
     }
+    menu_admin_administration(LC_Client, LC_Compte, LC_Virement);
 }
 
 void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)

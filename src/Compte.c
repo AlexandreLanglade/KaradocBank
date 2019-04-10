@@ -163,14 +163,12 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
     Compte etude = LCcompte;
     if (etude->compte_suivant == NULL) {
         LCcompte = NULL;
-        free(etude);
         return;
     }
     while(etude->compte_suivant != compte){
         etude = etude->compte_suivant;
     }
     etude->compte_suivant = compte->compte_suivant;
-    free(compte);
 }
 
 void
@@ -185,7 +183,9 @@ titulairesCompte(Compte compte) {
 
 void
 afficherVirements(Compte compte, Virement LCvir) {
-    Virement etude = LCvir;
+    Virement etude;
+    etude = malloc(sizeof(Virement));
+    etude = LCvir;
     while(etude != NULL){
         if (getIdCompteFrom(etude) == getIdCompte(compte) || getIdCompteTo(etude) == getIdCompte(compte)){
             double montant = getMontantVir(etude);
