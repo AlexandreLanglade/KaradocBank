@@ -184,6 +184,7 @@ void creer_fichier_json_client(Client client)
             i++;
         }
         fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), mdp);
+        fclose(fichier);
     }
 }
 
