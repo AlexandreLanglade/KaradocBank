@@ -19,9 +19,9 @@ getIndexClient(){
 	int index;
     if(file != NULL){
         fscanf(file, "%d\n", &index);
+        fclose(file);
     }
     else{printf("ERROR READING FILE INDEX.TXT\n");}
-    fclose(file);
 	return index;
 }
 
@@ -30,9 +30,13 @@ void incrementerIndexClient(int index)
     FILE *file;
     file = fopen("data/Clients/index.txt", "w");
     index++;
-    if(file != NULL) fprintf(file, "%d", index);
-    else{printf("ERROR READING INDEX.TXT\n");}
-    fclose(file);
+    if(file != NULL){
+        fprintf(file, "%d", index);
+        fclose(file);
+    }
+    else{
+        printf("ERROR READING INDEX.TXT\n");
+    }
 }
 
 
@@ -55,7 +59,6 @@ cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char m
     res->numero_tel = numero_tel;
     res->client_suivant = NULL;
     creer_fichier_json_client(res);
-    printf("pas de prob avec le json\n");
     addLCClient(&LCclient, res);
 }
 
@@ -122,12 +125,8 @@ setNum(Client client, int num){
 }
 
 void
-setMdp(Client client, char mdp[32]){
-    int i;
-    for(i = 0; i < 32; i++)
-    {
-        client->mdp[i] = mdp[i];
-    } 
+setMdp(Client client, char *mdp){
+    strcpy(client->mdp, mdp);
 }
 
 void
