@@ -1,9 +1,0 @@
-On en a gros (sur le compte)
-
-2a) Les fichiers json sont organisés dans trois dossiers : Clients, Comptes et Virements. Chaque client, compte, virement à un fichier json associé.
-Pour la séparation en différents fichiers du code du programme, il a été nécessaire de coder des getters et des setters pour chacune de nos structures.
-Le programme est divisé en plusieurs parties :
-Il débute par une initialisation où 3 listes chaînées (une pour les clients, une pour les comptes et une pour les virements) sont remplies avec les informations récupérés par les fonctions de lecture. Une fois l’initialisation terminée, la fonction login est appelée et l’utilisateur est invité à s’identifier avec son login et son mot de passe ; le mot de passe étant crypté au format md5 par la fonction hachage. Une fois connecté, l’utilisateur peut naviguer dans différents menus. Il y a une fonction par menu. Chaque fonction est composée d’un switch qui oriente vers la fonction suivante correspondant au menu ou à l’option souhaités.
-Le fonctionnement des comptes, clients et virements est fait de façon similaire : possibilité de création, modification ou suppression d’un client/compte/virement via les fonctions de création, suppression et les setters.
-A chaque création d’un client/compte/virement, l’identifiant attribué correspond à l’index indiqué dans le fichier index.txt. Index qui est incrémenté à chaque création pour garantir l’unicité de chaque client/compte/virement.
-Pour la sauvegarde des données, les fichiers sont actualisés à chaque modification pour prévenir en cas de plantage du programme.

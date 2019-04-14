@@ -89,8 +89,7 @@ LCinitCompte(int index, Compte * LCcompte) {
 */
 
 void
-toprintcompte(Compte compte) {
-    //TODO: ajouter nom + saucisse   
+toprintcompte(Compte compte) { 
     if (compte->type == 'c') {
         printf("%d C.COURANT %d %d %lf\n",
         compte->id_compte,

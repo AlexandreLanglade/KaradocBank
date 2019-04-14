@@ -10,6 +10,7 @@ struct TitulaireCompte_s
     Client client_suivant;
 };
 
+
 /*
 
     retourne l'index indiqué dans le fichier index.txt
