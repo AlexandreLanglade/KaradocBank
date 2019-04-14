@@ -10,7 +10,6 @@ struct TitulaireCompte_s
     Client client_suivant;
 };
 
-//TODO VarGlobSize
 
 int
 getIndexClient(){

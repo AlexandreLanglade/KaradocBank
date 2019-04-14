@@ -89,8 +89,7 @@ LCinitCompte(int index, Compte * LCcompte) {
 */
 
 void
-toprintcompte(Compte compte) {
-    //TODO: ajouter nom + saucisse   
+toprintcompte(Compte compte) { 
     if (compte->type == 'c') {
         printf("%d C.COURANT %d %d %lf\n",
         compte->id_compte,
@@ -230,7 +229,6 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
 
 void
 titulairesCompte(Compte compte) {
-    //TODO: ajouter nom ?
     if (compte->id_client2 != -1) {
         printf("%d %d\n", compte->id_client1, compte->id_client2);
     } else {
