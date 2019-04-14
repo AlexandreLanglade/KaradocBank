@@ -9,6 +9,12 @@ struct Virement_s
     Virement virement_suivant;
 };
 
+/*
+
+    retourne l'index indiqué dans le fichier index.txt
+
+*/
+
 int
 getIndexVirement(){
     FILE *file;
@@ -22,6 +28,12 @@ getIndexVirement(){
 	return index;
 }
 
+/*
+
+    incrémente l'index du fichier index.txt
+
+*/
+
 void incrementerIndexVirement(int index)
 {
     FILE *file;
@@ -31,6 +43,11 @@ void incrementerIndexVirement(int index)
     fclose(file);
 }
 
+/*
+
+    créer un virement, son fichier correspondant et l'ajoute à la liste chaînée
+
+*/
 
 void cr_virement(Virement LCvirement, int id_compteFrom, int id_compteTo, double montant)
 {
@@ -46,6 +63,13 @@ void cr_virement(Virement LCvirement, int id_compteFrom, int id_compteTo, double
     addLCVirement(&LCvirement, res);
 }
 
+/*
+
+    rempli le virement correspondant à l'index passé en paramètre et l'ajoute
+    à la liste chaînée
+
+*/
+
 void LCinitVirement(int index, Virement * LCVirement)
 {
     Virement res;
@@ -54,6 +78,12 @@ void LCinitVirement(int index, Virement * LCVirement)
     lecture_fichier_json_virement(index, res);
     addLCVirement(LCVirement, res);
 }
+
+/*
+
+    ajoute le virement passé en paramètre à la liste chaînée des virements
+
+*/
 
 void addLCVirement(Virement * LCVirement, Virement vir)
 {
@@ -69,10 +99,11 @@ void addLCVirement(Virement * LCVirement, Virement vir)
     }
 }
 
-void
-setSuivVNull(Virement virement) {
-    virement->virement_suivant = NULL;
-}
+/*
+
+    GETTERS
+
+*/
 
 int getIdCompteFrom(Virement virement)
 {
@@ -97,6 +128,17 @@ double getMontantVir(Virement virement)
 Virement
 getNextVir(Virement vir) {
     return vir->virement_suivant;
+}
+
+/*
+
+    SETTERS
+
+*/
+
+void
+setSuivVNull(Virement virement) {
+    virement->virement_suivant = NULL;
 }
 
 void setIdCompteFrom(Virement vir, int id)
