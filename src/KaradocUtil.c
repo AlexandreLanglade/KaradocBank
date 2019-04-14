@@ -1,5 +1,11 @@
 #include "../include/KaradocUtil.h"
 
+/*
+
+    Initialise les 3 listes chaînées (Client compte et virement)
+
+*/
+
 void initialisation(Compte * LCCompte, Client * LCClient, Virement * LCVirement)
 {
     FILE *f;
@@ -43,6 +49,12 @@ void initialisation(Compte * LCCompte, Client * LCClient, Virement * LCVirement)
     }
 }
 
+/*
+
+    Retourne la date du jour au format JJMMAAAA
+
+*/
+
 char *getDate_today()
 {
     time_t actTime;
@@ -54,6 +66,13 @@ char *getDate_today()
     sprintf(date, "%02d%02d%d", timeComp->tm_mday, timeComp->tm_mon+1, timeComp->tm_year+1900);
     return date;
 }
+
+/*
+
+    rempli le client passé en paramètre avec les infos du fichier correspondant à l'ID
+    passé en paramètre
+
+*/
 
 void lecture_fichier_json_client(int id, Client client)
 {
@@ -86,6 +105,13 @@ void lecture_fichier_json_client(int id, Client client)
         }
     }
 }
+
+/*
+
+    rempli le compte passé en paramètre avec les infos du fichier correspondant à l'ID
+    passé en paramètre
+
+*/
 
 void lecture_fichier_json_compte(int id, Compte compte) //CHECK
 {
@@ -123,6 +149,13 @@ void lecture_fichier_json_compte(int id, Compte compte) //CHECK
     }
 }
 
+/*
+
+    rempli le virement passé en paramètre avec les infos du fichier correspondant à l'ID
+    passé en paramètre
+
+*/
+
 void lecture_fichier_json_virement(int id, Virement virement) //CHECK
 {
     FILE *f;
@@ -154,6 +187,12 @@ void lecture_fichier_json_virement(int id, Virement virement) //CHECK
         }
     }
 }
+
+/*
+
+    crée un nouveau fichier correspondant au client passé en paramètre
+
+*/
 
 void creer_fichier_json_client(Client client)
 {
@@ -188,6 +227,12 @@ void creer_fichier_json_client(Client client)
     }
 }
 
+/*
+
+    crée un nouveau fichier correspondant au compte passé en paramètre
+
+*/
+
 void creer_fichier_json_compte(Compte compte)
 {
     FILE *fichier;
@@ -201,6 +246,12 @@ void creer_fichier_json_compte(Compte compte)
     }
 }
 
+/*
+
+    crée un nouveau fichier correspondant au virement passé en paramètre
+
+*/
+
 void creer_fichier_json_virement(int id, int id_compteFrom, int id_compteTo, char *date, double montant)
 {
     FILE *fichier;
@@ -213,6 +264,13 @@ void creer_fichier_json_virement(int id, int id_compteFrom, int id_compteTo, cha
         fclose(fichier);
     }
 }
+
+/*
+
+    retourne le client correspondant à l'ID et le mot de passe donné par l'utilisateur
+    Boucle tant que l'ID/mot de passe ne correspond pas à un client
+
+*/
 
 Client login(Client LCClient)
 {
@@ -232,7 +290,11 @@ Client login(Client LCClient)
     }
 }
 
-//Prends en paramètre le mdp en clair et le crypte
+/*
+
+    Prends en paramètre le mdp en clair et le crypte
+
+*/
 
 char *hachage_mdp(char *mdp)
 {
@@ -247,6 +309,12 @@ char *hachage_mdp(char *mdp)
     mdp = hache;
     return mdp;
 }
+
+/*
+
+    menu général de l'administrateur
+
+*/
 
 void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
@@ -276,6 +344,12 @@ void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
             break;
     }
 }
+
+/*
+
+    menu général du client
+
+*/
 
 void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
@@ -317,6 +391,12 @@ void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_
             break;
     }
 }
+
+/*
+
+    menu du client lui permettant de gérer ses comptes
+
+*/
 
 void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
@@ -395,6 +475,13 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
     }
     menu_client_gestionComptes(client, LC_Client, LC_Compte, LC_Virement);
 }
+
+/*
+
+    menu client lui permettant de créer/supprimer un compte
+    ou de changer son mot de passe
+
+*/
 
 void menu_client_administration(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
@@ -486,6 +573,12 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
     menu_client_administration(client, LC_Client, LC_Compte, LC_Virement);
 }
 
+/*
+
+    menu de l'administrateur lui permettant la gestion de tous les comptes
+
+*/
+
 void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     printf("\n\n");
@@ -511,6 +604,12 @@ void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_V
     }
     menu_admin_gestionComptes(LC_Client, LC_Compte, LC_Virement);
 }
+
+/*
+
+    menu de l'administrateur lui permettant la gestion de tous les clients
+
+*/
 
 void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
@@ -572,6 +671,12 @@ void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_V
     menu_admin_gestionClients(LC_Client, LC_Compte, LC_Virement);
 }
 
+/*
+
+    menu de l'administrateur lui permettant de changer son mot de passe
+
+*/
+
 void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
     printf("\n\n");
@@ -602,6 +707,12 @@ void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_V
     }
     menu_admin_administration(LC_Client, LC_Compte, LC_Virement);
 }
+
+/*
+
+    sous-menu du menu admin_gestion_comptes
+
+*/
 
 void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {

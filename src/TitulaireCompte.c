@@ -10,7 +10,11 @@ struct TitulaireCompte_s
     Client client_suivant;
 };
 
-//TODO VarGlobSize
+/*
+
+    retourne l'index indiqué dans le fichier index.txt
+
+*/
 
 int
 getIndexClient(){
@@ -24,6 +28,12 @@ getIndexClient(){
     else{printf("ERROR READING FILE INDEX.TXT\n");}
 	return index;
 }
+
+/*
+
+    incrémente l'index du fichier index.txt
+
+*/
 
 void incrementerIndexClient(int index)
 {
@@ -39,6 +49,11 @@ void incrementerIndexClient(int index)
     }
 }
 
+/*
+
+    créer un client, son fichier correspondant et l'ajoute à la liste chaînée
+
+*/
 
 void
 cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char mdp[32]) {
@@ -62,6 +77,13 @@ cr_client(Client LCclient, char nom[15], char prenom[15], int numero_tel, char m
     addLCClient(&LCclient, res);
 }
 
+/*
+
+    rempli le client correspondant à l'index passé en paramètre et l'ajoute
+    à la liste chaînée
+
+*/
+
 void
 LCinitClient(int index, Client * LCclient){
     Client res;
@@ -69,6 +91,12 @@ LCinitClient(int index, Client * LCclient){
     lecture_fichier_json_client(index, res);
     addLCClient(LCclient, res);
 }
+
+/*
+
+    ajoute le client passé en paramètre à la liste chaînée des clients
+
+*/
 
 void
 addLCClient(Client * LCClient, Client client){
@@ -84,6 +112,11 @@ addLCClient(Client * LCClient, Client client){
     }
 }
 
+/*
+
+    retourne le client correspondant à l'ID passée en paramètre
+
+*/
 
 Client
 findClient(int id, Client LCClient) {
@@ -94,6 +127,12 @@ findClient(int id, Client LCClient) {
     }
     return etude;
 }
+
+/*
+
+    SETTERS
+
+*/
 
 void
 setId(Client client, int id)
@@ -133,6 +172,12 @@ void
 setSuivClNull(Client client) {
     client->client_suivant = NULL;
 }
+
+/*
+
+    GETTERS
+
+*/
 
 int
 getIdClient(Client client){

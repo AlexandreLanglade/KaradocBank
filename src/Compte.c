@@ -230,7 +230,6 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
 
 void
 titulairesCompte(Compte compte) {
-    //TODO: ajouter nom ?
     if (compte->id_client2 != -1) {
         printf("%d %d\n", compte->id_client1, compte->id_client2);
     } else {
