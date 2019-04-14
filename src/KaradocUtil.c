@@ -250,6 +250,7 @@ char *hachage_mdp(char *mdp)
 
 void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    system("clear");
     int choix;
     printf("----MENU ADMINISTRATEUR----\n\n");
     printf("1/ Gestion des comptes\n");
@@ -278,6 +279,7 @@ void menu_admin(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 
 void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    system("clear");
     int choix;
     char *nom, *prenom;
     nom = malloc(50);
@@ -318,6 +320,7 @@ void menu_client(Client client, Client LC_Client, Compte LC_Compte, Virement LC_
 
 void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    printf("\n\n");
     int choix;
     char *nom;
     nom = malloc(50);
@@ -395,6 +398,7 @@ void menu_client_gestionComptes(Client client, Client LC_Client, Compte LC_Compt
 
 void menu_client_administration(Client client, Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    printf("\n\n");
     int choix;
     char *nom, *prenom;
     nom = malloc(50);
@@ -484,6 +488,7 @@ void menu_client_administration(Client client, Client LC_Client, Compte LC_Compt
 
 void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    printf("\n\n");
     int choix;
     printf("admin\n");
     printf("----Gestion des comptes----\n");
@@ -509,6 +514,7 @@ void menu_admin_gestionComptes(Client LC_Client, Compte LC_Compte, Virement LC_V
 
 void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    printf("\n\n");
     int choix;
     printf("admin\n");
     printf("----Gestion des clients----\n");
@@ -568,6 +574,7 @@ void menu_admin_gestionClients(Client LC_Client, Compte LC_Compte, Virement LC_V
 
 void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    printf("\n\n");
     int choix;
     printf("admin");
     printf("----Administration----\n");
@@ -598,6 +605,7 @@ void menu_admin_administration(Client LC_Client, Compte LC_Compte, Virement LC_V
 
 void menu_c(Client LC_Client, Compte LC_Compte, Virement LC_Virement)
 {
+    printf("\n\n");
     int choix;
     printf("admin\n");
     printf("----Gestion des comptes----\n");
