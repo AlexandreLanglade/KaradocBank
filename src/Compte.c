@@ -11,6 +11,12 @@ struct Compte_s
     Compte compte_suivant;
 };
 
+/*
+
+    retourne l'index indiqué dans le fichier index.txt
+
+*/
+
 int
 getIndexCompte(){
     FILE *file;
@@ -24,6 +30,12 @@ getIndexCompte(){
 	return index;
 }
 
+/*
+
+    incrémente l'index du fichier index.txt
+
+*/
+
 void incrementerIndexCompte(int index)
 {
     FILE *file;
@@ -32,6 +44,12 @@ void incrementerIndexCompte(int index)
     if(file != NULL) fprintf(file, "%d", index);
     fclose(file);
 }
+
+/*
+
+    créer un compte, son fichier correspondant et l'ajoute à la liste chaînée
+
+*/
 
 void
 cr_compte(Compte LCcompte, int id_client1, int id_client2, char type) {
@@ -49,6 +67,13 @@ cr_compte(Compte LCcompte, int id_client1, int id_client2, char type) {
     addLCCompte(&LCcompte, res);
 }
 
+/*
+
+    rempli le compte correspondant à l'index passé en paramètre et l'ajoute
+    à la liste chaînée
+
+*/
+
 void
 LCinitCompte(int index, Compte * LCcompte) {
     Compte res;
@@ -56,6 +81,12 @@ LCinitCompte(int index, Compte * LCcompte) {
     lecture_fichier_json_compte(index, res);
     addLCCompte(LCcompte, res);
 }
+
+/*
+
+    affiche le compte passé en paramètre
+
+*/
 
 void
 toprintcompte(Compte compte) {
@@ -80,6 +111,12 @@ toprintcompte(Compte compte) {
         compte->montant);
     }
 }
+
+/*
+
+    affiche la liste des comptes triés
+
+*/
 
 void
 afficherComptes(Compte LCcompte) {  
@@ -106,6 +143,13 @@ afficherComptes(Compte LCcompte) {
         etude = etude->compte_suivant;        
     }
 }
+
+/*
+
+    crée un fichier au format csv rempli avec les virements correspondant aux dates
+    passées en paramètre
+
+*/
 
 void
 exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
@@ -154,6 +198,13 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
         }
     }
 
+/*
+
+    supprime le compte passé en paramètre
+    (supprime aussi le fichier du compte correspondant)
+
+*/
+
     void
     supprimerCompte(Compte LCcompte, Compte compte) {
     //LE COMPTE DOIT EXISTER !!!
@@ -171,6 +222,12 @@ exporterCompte(Virement LCvir, Compte compte, char from[8], char to[8]) {
     etude->compte_suivant = compte->compte_suivant;
 }
 
+/*
+
+    affiche la liste des titulaires du compte passé en paramètres
+
+*/
+
 void
 titulairesCompte(Compte compte) {
     //TODO: ajouter nom ?
@@ -180,6 +237,12 @@ titulairesCompte(Compte compte) {
         printf("%d\n", compte->id_client1);
     }    
 }
+
+/*
+
+    affiche les virements du compte passé en paramètre
+
+*/
 
 void
 afficherVirements(Compte compte, Virement LCvir) {
@@ -196,6 +259,12 @@ afficherVirements(Compte compte, Virement LCvir) {
     }    
 }
 
+/*
+
+    ajoute le compte passé en paramètre à la liste chaînée des comptes
+
+*/
+
 void
 addLCCompte(Compte * LCCompte, Compte compte) {
     if (*LCCompte == NULL) {
@@ -211,6 +280,12 @@ addLCCompte(Compte * LCCompte, Compte compte) {
     }    
 }
 
+/*
+
+    retourne le compte correspondant à l'ID passée en paramètre
+
+*/
+
 Compte
 findCompte(int id, Compte LCCompte) {
     Compte etude = malloc(sizeof(Compte));
@@ -220,6 +295,12 @@ findCompte(int id, Compte LCCompte) {
     }
     return etude;
 }
+
+/*
+
+    SETTERS
+
+*/
 
 void
 setIdCompte(Compte compte, int id) {
@@ -255,6 +336,12 @@ void
 setSuivCNull(Compte compte) {
     compte->compte_suivant = NULL;
 }
+
+/*
+
+    GETTERS
+
+*/
 
 char
 getLock(Compte compte) {

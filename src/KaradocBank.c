@@ -2,6 +2,7 @@
 
 int main(int argc, char const *argv[])
 {
+    system("clear");
     Client LC_Client = NULL;
     Compte LC_Compte = NULL;
     Virement LC_Virement = NULL;
