@@ -55,7 +55,7 @@ char *getDate_today()
     return date;
 }
 
-void lecture_fichier_json_client(int id, Client client) //CHECK VOID
+void lecture_fichier_json_client(int id, Client client)
 {
     FILE *f;
     char commande[100];
@@ -184,7 +184,7 @@ void creer_fichier_json_client(Client client)
             i++;
         }
         fprintf(fichier, "{\n\t\"id_client\" : \"%d\",\n\t\"nom\" : \"%s\",\n\t\"prenom\" : \"%s\",\n\t\"numero_tel\" : \"%d\",\n\t\"mdp\" : \"%s\"\n}", getIdClient(client), nom, prenom, getNum(client), mdp);
-        fclose(fichier);
+        fflush(fichier);
     }
 }
 
